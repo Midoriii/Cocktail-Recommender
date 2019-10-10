@@ -21,8 +21,7 @@ def getRecipes():
                     recipePages.append(link)
 
 
-def scrapRecipe():
-    recipeLink = 'https://www.liquor.com/recipes/bacardi-pina-colada'
+def scrapRecipe(recipeLink):
     recipe = Recipe.Recipe()
     scrapIngredients(recipeLink, recipe)
     scrapProfile(recipeLink, recipe)
@@ -32,11 +31,18 @@ def scrapRecipe():
 
 def scrapIngredients(recipeLink, recipe):
     page = parsePageFromLink(recipeLink)
-    ingredientClass = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"}))
-    print('ingredients', ingredientClass)
-    ingrediants = re.compile(r'<div class="col-xs-9 x-recipe-ingredient">(.*)</div>')
-    # print(ingrediants.search(ingredientClass).group(1))
+    ingredientClass = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
+    ingredientList = ingredientClass.split("\n")
+    simpleIngredientsRegex = re.compile(r'(.*)</div>')
+    complexIngredientsRegex = re.compile(r'style="text-decoration: underline;">(.*)</a> </div>, <div class="col-xs-9 x-recipe-ingredient">')
 
+    for ingredientLine in ingredientList:
+        # extracts simple ingredients find href skips ingredients with link
+        if simpleIngredientsRegex.search(ingredientLine) is not None and ingredientLine.find('href') == -1:
+            recipe.ingredients.append(simpleIngredientsRegex.search(ingredientLine).group(1))
+        # extracts complex ingredients with href
+        if complexIngredientsRegex.search(ingredientLine) is not None and ingredientLine.find('href') != -1:
+            recipe.ingredients.append(complexIngredientsRegex.search(ingredientLine).group(1))
 
 
 def scrapProfile(recipeLink, recipe):
@@ -61,9 +67,9 @@ def scrapProfile(recipeLink, recipe):
 
 def scrapGlass(recipeLink, recipe):  # TODO is there recipe with two or more glasses?
     page = parsePageFromLink(recipeLink)
-    linewWithGlass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
+    lineWithGlass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
     glassRe = re.compile(r'/?post_type=recipe&amp;s=(.*)">(.*)</a></div>')
-    recipe.glass.append(glassRe.search(linewWithGlass).group(2))
+    recipe.glass.append(glassRe.search(lineWithGlass).group(2))
 
 def scrapGarnish(recipeLink, recipe):
     pass
@@ -116,7 +122,7 @@ listOfProfileRegularExpressions = {
     'difficulty': r'/complexity/(.*)/?post_type=recipe">(.*)</a>',
     'hours': r'/hours/(.*)/?post_type=recipe">(.*)</a>',
     'theme': r'/theme/(.*)/?post_type=recipe">(.*)</a>',
-    'brands': r'/?post_type=brand&amp;s=(.*)">(.*)</a>',  # TODO once brands are done end search
+    'brands': r'/?post_type=brand&amp;s=(.*)">(.*)</a>',
 }
 
 
@@ -129,7 +135,8 @@ recipePages = []
 
 # getPagesWithRecipes()
 # getRecipes()
+testRecipeLink = 'https://www.liquor.com/recipes/bacardi-pina-colada'
+scrapRecipe(testRecipeLink)
 
-scrapRecipe()
 print("\n".join(recipePages))
 print(len(recipePages))
