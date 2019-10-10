@@ -26,6 +26,7 @@ class Recipe:
                 "base: " + ", ".join(self.base) + " \n" +
                 "cocktailType : " + ", ".join(self.cocktailType) + "\n" +
                 "preparation : " + ", ".join(self.preparation) + "\n" +
+                "served : " + ", ".join(self.served) + "\n" +
                 "strength : " + ", ".join(self.strength) + "\n" +
                 "difficulty : " + ", ".join(self.difficulty) + "\n" +
                 "hours : " + ", ".join(self.hours) + "\n" +
