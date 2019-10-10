@@ -26,8 +26,8 @@ def scrapRecipe():
     recipe = Recipe.Recipe()
     scrapIngrediences(recipeLink, recipe)
     scrapProfile(recipeLink, recipe)
+    scrapGlass(recipeLink, recipe)
     print(recipe)
-
 
 
 def scrapIngrediences(recipeLink, recipe):
@@ -36,7 +36,7 @@ def scrapIngrediences(recipeLink, recipe):
 
 def scrapProfile(recipeLink, recipe):
     page = parsePageFromLink(recipeLink)
-    recipe.name = page.title.string  # TODO remove 'Cocktail Recipe' at the end
+    recipe.name = removeCocktailRecipeStringFromEndOfTitle(page.title.string)
 
     for link in page.find_all('a'):
         link = str(link)
@@ -49,9 +49,25 @@ def scrapProfile(recipeLink, recipe):
                 fillRecipeValues(key, profileRe.search(link).group(2), recipe)
 
 
+def scrapGlass(recipeLink, recipe):
+    page = parsePageFromLink(recipeLink)
+    linewWithGlass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
+    glassRe = re.compile(r'/?post_type=recipe&amp;s=(.*)">(.*)</a></div>')
+    recipe.glass.append(glassRe.search(linewWithGlass).group(2))
+
+def scrapGarnish(recipeLink, recipe):
+    pass
+
+
 def parsePageFromLink(link):
     pageRequest = requests.get(link, headers)
     return BeautifulSoup(pageRequest.text, 'html.parser')
+
+
+def removeCocktailRecipeStringFromEndOfTitle(title):
+    # Title has string 'Cocktail Recipe' at the end this function removes it
+    index = title.find('Cocktail Recipe')
+    return title[:index]
 
 
 def fillRecipeValues(key, text, recipe):
@@ -82,8 +98,7 @@ def fillRecipeValues(key, text, recipe):
 
 
 listOfProfileRegularExpressions = {
-    'garnish': r'/?post_type=recipe&amp;s=(.*)"><span class="oz-value">(.*)</span><span class="ml-value"',
-    'glass': r'/?post_type=recipe&amp;s=(.*)">(.*)</a>',  # TODO probably scrap from <div class=... not <a href...
+    'garnish': r'/?post_type=recipe&amp;s=(.*)"><span class="oz-value">(.*)</span><span class="ml-value"',  # TODO get rid of semicolon
     'flavor': r'/flavor-profile/(.*)/?post_type=recipe">(.*)</a>',
     'base': r'/base/(.*)/?post_type=recipe">(.*)</a>',
     'cocktailType': r'/recipe-type/(.*)/?post_type=recipe">(.*)</a>',
@@ -93,7 +108,7 @@ listOfProfileRegularExpressions = {
     'difficulty': r'/complexity/(.*)/?post_type=recipe">(.*)</a>',
     'hours': r'/hours/(.*)/?post_type=recipe">(.*)</a>',
     'theme': r'/theme/(.*)/?post_type=recipe">(.*)</a>',
-    'brands': r'/?post_type=brand&amp;s=(.*)">(.*)</a>',  # once brands are done end search
+    'brands': r'/?post_type=brand&amp;s=(.*)">(.*)</a>',  # TODO once brands are done end search
 }
 
 

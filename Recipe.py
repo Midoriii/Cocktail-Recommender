@@ -2,7 +2,7 @@
 class Recipe:
     def __init__(self):
         # lists because some fields can have multiple values
-        self.name = "placeholder name"
+        self.name = ""
         self.garnish = []
         self.glass = []
         self.ingredients = []
