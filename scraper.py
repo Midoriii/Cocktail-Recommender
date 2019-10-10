@@ -24,14 +24,19 @@ def getRecipes():
 def scrapRecipe():
     recipeLink = 'https://www.liquor.com/recipes/bacardi-pina-colada'
     recipe = Recipe.Recipe()
-    scrapIngrediences(recipeLink, recipe)
+    scrapIngredients(recipeLink, recipe)
     scrapProfile(recipeLink, recipe)
     scrapGlass(recipeLink, recipe)
     print(recipe)
 
 
-def scrapIngrediences(recipeLink, recipe):
-    pass
+def scrapIngredients(recipeLink, recipe):
+    page = parsePageFromLink(recipeLink)
+    ingredientClass = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"}))
+    print('ingredients', ingredientClass)
+    ingrediants = re.compile(r'<div class="col-xs-9 x-recipe-ingredient">(.*)</div>')
+    # print(ingrediants.search(ingredientClass).group(1))
+
 
 
 def scrapProfile(recipeLink, recipe):
@@ -45,11 +50,16 @@ def scrapProfile(recipeLink, recipe):
         for key, regularExpreasion in listOfProfileRegularExpressions.items():
             profileRe = re.compile(regularExpreasion)
             if profileRe.search(link) is not None:
-                # print(key, ':', profileRe.search(link).group(2))
-                fillRecipeValues(key, profileRe.search(link).group(2), recipe)
+
+                # there are cocktailTypes at the end of page that doesn't belong to recipe once we reach them recipe
+                # is scrapped ad we can end
+                if key == 'cocktailType' and recipe.brands != []:
+                    break
+
+                fillRecipeProfileValues(key, profileRe.search(link).group(2), recipe)
 
 
-def scrapGlass(recipeLink, recipe):
+def scrapGlass(recipeLink, recipe):  # TODO is there recipe with two or more glasses?
     page = parsePageFromLink(recipeLink)
     linewWithGlass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
     glassRe = re.compile(r'/?post_type=recipe&amp;s=(.*)">(.*)</a></div>')
@@ -70,11 +80,9 @@ def removeCocktailRecipeStringFromEndOfTitle(title):
     return title[:index]
 
 
-def fillRecipeValues(key, text, recipe):
+def fillRecipeProfileValues(key, text, recipe):
     if key == 'garnish':
         recipe.garnish.append(text)
-    if key == 'glass':
-        recipe.glass.append(text)
     if key == 'flavor':
         recipe.flavor.append(text)
     if key == 'base':
