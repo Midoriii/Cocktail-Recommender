@@ -10,8 +10,8 @@ bacardiPinaColadaLink = 'https://www.liquor.com/recipes/bacardi-pina-colada'
 smokeBreakLink = 'https://www.liquor.com/recipes/smoke-break'
 veranoEnValenciaLink = 'https://www.liquor.com/recipes/azunia-verano-en-valencia'
 hydrateLink = 'https://www.liquor.com/recipes/hydrate'
-royalBalmoralPunchLink = 'https://www.liquor.com/recipes/royal-balmoral-punch/'
-getOffMyIsle = 'https://www.liquor.com/recipes/mozart-get-off-my-isle/'  # recipe with two glasses, and have occasions in profile
+royalBalmoralPunchLink = 'https://www.liquor.com/recipes/royal-balmoral-punch'
+getOffMyIsle = 'https://www.liquor.com/recipes/mozart-get-off-my-isle'  # recipe with two glasses, and have occasions in profile
 
 
 # TODO granish is not done yet
@@ -19,7 +19,8 @@ class TestScrapProfile(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
         scraper.scrapProfile(bacardiPinaColadaLink, recipe)
-        #self.assertTrue(recipe.garnish[0] == '')
+        self.assertTrue(recipe.garnish[0] == 'Pineapple slice')
+        self.assertTrue(recipe.garnish[1] == 'Pineapple leaf')
         self.assertTrue(recipe.flavor[0] == 'Fruity/Citrus-forward')
         self.assertTrue(recipe.base[0] == 'Rum')
         self.assertTrue(recipe.cocktailType[0] == 'Classics')
@@ -36,7 +37,8 @@ class TestScrapProfile(TestCase):
     def testSmokeBreak(self):
         recipe = Recipe.Recipe()
         scraper.scrapProfile(smokeBreakLink, recipe)
-        #self.assertTrue(recipe.garnish[0] == '')
+        self.assertTrue(recipe.garnish[0] == 'Dark chocolate')
+        self.assertTrue(recipe.garnish[1] == 'Dried black cherries')
         self.assertTrue(recipe.flavor[0] == 'Smoky')
         self.assertTrue(recipe.flavor[1] == 'Spirit-forward')
         self.assertTrue(recipe.base[0] == 'Bourbon / American Whiskey')
@@ -57,7 +59,8 @@ class TestScrapProfile(TestCase):
     def testVeranoEnValencia(self):
         recipe = Recipe.Recipe()
         scraper.scrapProfile(veranoEnValenciaLink, recipe)
-        # self.assertTrue(recipe.garnish[0] == '')
+        self.assertTrue(recipe.garnish[0] == 'Thyme sprigs')
+        self.assertTrue(recipe.garnish[1] == 'Dehydrated lemon wheel')
         self.assertTrue(recipe.flavor[0] == 'Fruity/Citrus-forward')
         self.assertTrue(recipe.flavor[1] == 'Sweet')
         self.assertTrue(recipe.base[0] == 'Tequila')
@@ -77,7 +80,8 @@ class TestScrapProfile(TestCase):
     def testHydrate(self):
         recipe = Recipe.Recipe()
         scraper.scrapProfile(hydrateLink, recipe)
-        # self.assertTrue(recipe.garnish[0] == '')
+        self.assertTrue(recipe.garnish[0] == 'Cucumber slice')
+        self.assertTrue(recipe.garnish[1] == 'Mint sprig')
         self.assertTrue(recipe.flavor[0] == 'Fruity/Citrus-forward')
         self.assertTrue(recipe.base[0] == 'Vodka')
         self.assertTrue(recipe.cocktailType[0] == 'Modern Classics')
@@ -94,7 +98,7 @@ class TestScrapProfile(TestCase):
     def testRoyalBalmoralPunch(self):
         recipe = Recipe.Recipe()
         scraper.scrapProfile(royalBalmoralPunchLink, recipe)
-        #self.assertTrue(recipe.garnish[0] == '')
+        self.assertTrue(recipe.garnish[0] == 'Lemon wheel')
         self.assertTrue(recipe.flavor[0] == 'Sour')
         self.assertTrue(recipe.flavor[1] == 'Sweet')
         self.assertTrue(recipe.base[0] == 'Scotch')
@@ -111,7 +115,7 @@ class TestScrapProfile(TestCase):
     def getOffMyIsle(self):
         recipe = Recipe.Recipe()
         scraper.scrapProfile(getOffMyIsle, recipe)
-        # self.assertTrue(recipe.garnish[0] == '')
+        self.assertTrue(recipe.garnish[0] == 'Dark chocolate shaving')
         self.assertTrue(recipe.flavor[0] == 'Sweet')
         self.assertTrue(recipe.base[0] == 'Scotch')
         self.assertTrue(recipe.cocktailType[0] == 'Modern Classics')
@@ -212,7 +216,8 @@ class TestScrapGlass(TestCase):
     def getOffMyIsle(self):
         recipe = Recipe.Recipe()
         scraper.scrapGlass(getOffMyIsle, recipe)
-        self.assertTrue(recipe.glass[0] == 'Highball or Collins')
+        self.assertTrue(recipe.glass[0] == 'Highball')
+        self.assertTrue(recipe.glass[1] == 'Collins')
 
 
 

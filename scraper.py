@@ -37,10 +37,10 @@ def scrapIngredients(recipeLink, recipe):
     complexIngredientsRegex = re.compile(r'style="text-decoration: underline;">(.*)</a> </div>')
 
     for ingredientLine in ingredientList:
-        # extracts simple ingredients find href skips ingredients with link
+        # extracts ingredients (not containing link to that ingredient)
         if simpleIngredientsRegex.search(ingredientLine) is not None and ingredientLine.find('href') == -1:
             recipe.ingredients.append(simpleIngredientsRegex.search(ingredientLine).group(1))
-        # extracts complex ingredients with href
+        # extracts ingredients with associated link
         if complexIngredientsRegex.search(ingredientLine) is not None and ingredientLine.find('href') != -1:
             recipe.ingredients.append(complexIngredientsRegex.search(ingredientLine).group(1))
 
@@ -65,14 +65,13 @@ def scrapProfile(recipeLink, recipe):
                 fillRecipeProfileValues(key, profileRe.search(link).group(2), recipe)
 
 
-def scrapGlass(recipeLink, recipe):  # TODO is there recipe with two or more glasses?
+def scrapGlass(recipeLink, recipe):
     page = parsePageFromLink(recipeLink)
     lineWithGlass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
     glassRe = re.compile(r'/?post_type=recipe&amp;s=(.*)">(.*)</a></div>')
-    recipe.glass.append(glassRe.search(lineWithGlass).group(2))
-
-def scrapGarnish(recipeLink, recipe):
-    pass
+    text = glassRe.search(lineWithGlass).group(2)
+    text = text.split(' or ')  # there can be cocktails which can be served in 'glass1' or 'glass2'
+    recipe.glass.extend(text)
 
 
 def parsePageFromLink(link):
@@ -88,7 +87,9 @@ def removeCocktailRecipeStringFromEndOfTitle(title):
 
 def fillRecipeProfileValues(key, text, recipe):
     if key == 'garnish':
-        recipe.garnish.append(text)
+        # garnish can have more than one item separated by semicolon
+        text = text.split('; ')
+        recipe.garnish.extend(text)
     if key == 'flavor':
         recipe.flavor.append(text)
     if key == 'base':
@@ -114,7 +115,7 @@ def fillRecipeProfileValues(key, text, recipe):
 
 
 listOfProfileRegularExpressions = {
-    'garnish': r'/?post_type=recipe&amp;s=(.*)"><span class="oz-value">(.*)</span><span class="ml-value"',  # TODO get rid of semicolon
+    'garnish': r'/?post_type=recipe&amp;s=(.*)"><span class="oz-value">(.*)</span><span class="ml-value"',
     'flavor': r'/flavor-profile/(.*)/?post_type=recipe">(.*)</a>',
     'base': r'/base/(.*)/?post_type=recipe">(.*)</a>',
     'cocktailType': r'/recipe-type/(.*)/?post_type=recipe">(.*)</a>',
@@ -138,7 +139,7 @@ recipePages = []
 
 # getPagesWithRecipes()
 # getRecipes()
-testRecipeLink = 'https://www.liquor.com/recipes/smoke-break'
+testRecipeLink = 'https://www.liquor.com/recipes/azunia-verano-en-valencia'
 scrapRecipe(testRecipeLink)
 
 print("\n".join(recipePages))
