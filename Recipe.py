@@ -14,6 +14,7 @@ class Recipe:
         self.strength = []
         self.difficulty = []
         self.hours = []
+        self.occasions = []
         self.theme = []
         self.brands = []
 
@@ -30,6 +31,7 @@ class Recipe:
                 "strength : " + ", ".join(self.strength) + "\n" +
                 "difficulty : " + ", ".join(self.difficulty) + "\n" +
                 "hours : " + ", ".join(self.hours) + "\n" +
+                "occasions : " + ", ".join(self.hours) + "\n" +
                 "theme : " + ", ".join(self.theme) + "\n" +
                 "brands : " + ", ".join(self.brands))
 

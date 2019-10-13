@@ -34,7 +34,7 @@ def scrapIngredients(recipeLink, recipe):
     ingredientClass = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
     ingredientList = ingredientClass.split("\n")
     simpleIngredientsRegex = re.compile(r'(.*)</div>')
-    complexIngredientsRegex = re.compile(r'style="text-decoration: underline;">(.*)</a> </div>, <div class="col-xs-9 x-recipe-ingredient">')
+    complexIngredientsRegex = re.compile(r'style="text-decoration: underline;">(.*)</a> </div>')
 
     for ingredientLine in ingredientList:
         # extracts simple ingredients find href skips ingredients with link
@@ -105,6 +105,8 @@ def fillRecipeProfileValues(key, text, recipe):
         recipe.difficulty.append(text)
     if key == 'hours':
         recipe.hours.append(text)
+    if key == 'occasions':
+        recipe.hours.append(text)
     if key == 'theme':
         recipe.theme.append(text)
     if key == 'brands':
@@ -121,6 +123,7 @@ listOfProfileRegularExpressions = {
     'strength': r'/strength/(.*)/?post_type=recipe">(.*)</a>',
     'difficulty': r'/complexity/(.*)/?post_type=recipe">(.*)</a>',
     'hours': r'/hours/(.*)/?post_type=recipe">(.*)</a>',
+    'occasions': r'/occasions/(.*)/?post_type=recipe">(.*)</a>',
     'theme': r'/theme/(.*)/?post_type=recipe">(.*)</a>',
     'brands': r'/?post_type=brand&amp;s=(.*)">(.*)</a>',
 }
@@ -135,7 +138,7 @@ recipePages = []
 
 # getPagesWithRecipes()
 # getRecipes()
-testRecipeLink = 'https://www.liquor.com/recipes/bacardi-pina-colada'
+testRecipeLink = 'https://www.liquor.com/recipes/smoke-break'
 scrapRecipe(testRecipeLink)
 
 print("\n".join(recipePages))
