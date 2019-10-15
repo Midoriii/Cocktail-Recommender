@@ -50,9 +50,10 @@ def scrap_title(page, recipe):
 
 
 def scrap_ingredients(page, recipe):
-    # TODO some ingredients have trailing space or '*' get rid of it
+    # TODO some ingredients have trailing space get rid of it
     ingredient_class = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
-    lines_with_ingredients = ingredient_class.split("\n")
+    # some ingredients have '*' in name
+    lines_with_ingredients = ingredient_class.replace('*', '').split('\n')
     ingredient_without_link = compiledRegExs.ingredientWithoutLinkRegEx
     ingredient_containing_link = compiledRegExs.ingredientContainingLinkRegEx
 
@@ -86,8 +87,8 @@ def scrap_glass(page, recipe):
 
 def fill_recipe_profile_values(recipe_attribute, text, recipe):
     if recipe_attribute == 'garnish':
-        # garnish can have more than one item separated by semicolon
-        text = text.split('; ')
+        # garnish can have more than one item separated by semicolon, and can contain '*'
+        text = text.replace('*', '').split('; ')
         recipe.garnish.extend(text)
     if recipe_attribute == 'flavor':
         recipe.flavor.append(text)

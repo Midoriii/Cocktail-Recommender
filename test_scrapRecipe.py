@@ -1,11 +1,6 @@
 from unittest import TestCase
-import requests
 import scraper
 import Recipe
-
-
-headers = requests.utils.default_headers()
-headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
 
 bacardi_pina_colada = scraper.parse_page_from_link('https://www.liquor.com/recipes/bacardi-pina-colada')
 smoke_break = scraper.parse_page_from_link('https://www.liquor.com/recipes/smoke-break')
@@ -13,9 +8,12 @@ verano_en_valencia = scraper.parse_page_from_link('https://www.liquor.com/recipe
 hydrate = scraper.parse_page_from_link('https://www.liquor.com/recipes/hydrate')
 royal_balmoral_punch = scraper.parse_page_from_link('https://www.liquor.com/recipes/royal-balmoral-punch')
 get_off_my_isle = scraper.parse_page_from_link('https://www.liquor.com/recipes/mozart-get-off-my-isle')  # recipe with two glasses, and have occasions in profile
+kiwi_bird = scraper.parse_page_from_link('https://www.liquor.com/recipes/kiwi-birdmoral-punch')  # trailing **
+bourbon_toscano = scraper.parse_page_from_link('https://www.liquor.com/recipes/bourbon-toscano')  # * is the first character
+haileys_comet = scraper.parse_page_from_link('https://www.liquor.com/recipes/haileys-comet/')  # garnish with *
 
-# TODO add tests for trailing ' ' and '*' in ingredients
-# TODO add tests for recipes with missin brands which cannot trigger end of scrapping
+# TODO add tests for trailing ' ' in ingredients
+# TODO add tests for recipes with missing brands which cannot trigger end of scrapping
 class TestScrapProfile(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
@@ -217,3 +215,21 @@ class TestScrapGlass(TestCase):
         scraper.scrap_glass(get_off_my_isle, recipe)
         self.assertTrue(recipe.glass[0] == 'Highball')
         self.assertTrue(recipe.glass[1] == 'Collins')
+
+
+class TestStarCharNotPresent(TestCase):
+    def kiwiBird(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_ingredients(kiwi_bird, recipe)
+        self.assertTrue(recipe.ingredients[2] == 'Coconut cream')
+        self.assertTrue(recipe.ingredients[3] == 'Kiwi syrup')
+
+    def bourbonToscano(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_ingredients(bourbon_toscano, recipe)
+        self.assertTrue(recipe.ingredients[3] == 'Smoked ice cubes')
+
+    def haileysComet(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_ingredients(haileys_comet, recipe)
+        self.assertTrue(recipe.garnish[0] == 'Orgeat-chantilly cream')
