@@ -14,7 +14,8 @@ hydrate = scraper.parse_page_from_link('https://www.liquor.com/recipes/hydrate')
 royal_balmoral_punch = scraper.parse_page_from_link('https://www.liquor.com/recipes/royal-balmoral-punch')
 get_off_my_isle = scraper.parse_page_from_link('https://www.liquor.com/recipes/mozart-get-off-my-isle')  # recipe with two glasses, and have occasions in profile
 
-
+# TODO add tests for trailing ' ' and '*' in ingredients
+# TODO add tests for recipes with missin brands which cannot trigger end of scrapping
 class TestScrapProfile(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()

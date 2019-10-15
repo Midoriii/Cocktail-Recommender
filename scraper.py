@@ -6,20 +6,25 @@ import Recipe
 
 
 def get_pages_with_recipes():
+    pages_with_recipes = []
     for i in range(pagesWithRecipesToLoad):
-        pagesWithRecipes.append("https://www.liquor.com/recipes/page/" + str(i) + "/")
+        pages_with_recipes.append("https://www.liquor.com/recipes/page/" + str(i) + "/")
+    return pages_with_recipes
 
 
-def get_recipes():
-    for recipePage in pagesWithRecipes:
+def get_recipes(pages_with_recipes):
+    recipe_pages = []
+    for recipePage in pages_with_recipes:
         page = parse_page_from_link(recipePage)
 
         for link in page.find_all('a'):
             link = str(link.get('href'))
             if link.find("https://www.liquor.com/recipes") != -1 and link.find(
                     "https://www.liquor.com/recipes/page") == -1:
-                if link not in recipePages:
-                    recipePages.append(link)
+                if link not in recipe_pages:
+                    recipe_pages.append(link)
+
+    return recipe_pages
 
 
 def parse_page_from_link(link):
@@ -28,12 +33,14 @@ def parse_page_from_link(link):
 
 
 def scrap_recipe(recipe_link):
-    page = parse_page_from_link(recipe_link)
     recipe = Recipe.Recipe()
+    recipe.link = recipe_link
+    page = parse_page_from_link(recipe_link)
     scrap_title(page, recipe)
     scrap_ingredients(page, recipe)
     scrap_profile(page, recipe)
     scrap_glass(page, recipe)
+    return recipe
 
 
 def scrap_title(page, recipe):
@@ -43,6 +50,7 @@ def scrap_title(page, recipe):
 
 
 def scrap_ingredients(page, recipe):
+    # TODO some ingredients have trailing space or '*' get rid of it
     ingredient_class = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
     lines_with_ingredients = ingredient_class.split("\n")
     ingredient_without_link = compiledRegExs.ingredientWithoutLinkRegEx
@@ -63,6 +71,7 @@ def scrap_profile(page, recipe):
             if regularExpresion.search(link) is not None:
                 # there are cocktailTypes at the end of page that doesn't belong to recipe once we reach cocktailType
                 # and last item of recipe (brands) has been filled we know that we are at the end
+                # TODO not reliable some recipes don't have brands
                 if recipeAttribute == 'cocktailType' and recipe.brands != []:
                     break
                 fill_recipe_profile_values(recipeAttribute, regularExpresion.search(link).group(2), recipe)
@@ -104,15 +113,28 @@ def fill_recipe_profile_values(recipe_attribute, text, recipe):
         recipe.brands.append(text)
 
 
+def scrap_all_recipes():
+    pages_with_recipes = get_pages_with_recipes()
+    recipe_pages = get_recipes(pages_with_recipes)
+
+    list_of_recipes = []
+    for recip_page in recipe_pages:
+        print('working on: ', recip_page)
+        recipe = scrap_recipe(recip_page)
+        list_of_recipes.append(recipe)
+
+    return list_of_recipes
+
+
 headers = requests.utils.default_headers()
 headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
 compiledRegExs = CompiledRegExs.CompiledRegExs()
-pagesWithRecipesToLoad = 48  # there is currently 48 pages
 
-pagesWithRecipes = []
-recipePages = []
+if __name__ == "__main__":
+    pagesWithRecipesToLoad = 1  # there is currently 48 pages
+    list_of_recipes = scrap_all_recipes()
+    for recipe in list_of_recipes:
+        print(recipe)
 
-# getPagesWithRecipes()
-# getRecipes()
-testRecipeLink = 'https://www.liquor.com/recipes/azunia-verano-en-valencia'
-scrap_recipe(testRecipeLink)
+# testRecipeLink = 'https://www.liquor.com/recipes/azunia-verano-en-valencia'
+# scrap_recipe(testRecipeLink)
