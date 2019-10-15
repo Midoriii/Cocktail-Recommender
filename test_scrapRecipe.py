@@ -12,7 +12,6 @@ kiwi_bird = scraper.parse_page_from_link('https://www.liquor.com/recipes/kiwi-bi
 bourbon_toscano = scraper.parse_page_from_link('https://www.liquor.com/recipes/bourbon-toscano')  # * is the first character
 haileys_comet = scraper.parse_page_from_link('https://www.liquor.com/recipes/haileys-comet/')  # garnish with *
 
-# TODO add tests for trailing ' ' in ingredients
 # TODO add tests for recipes with missing brands which cannot trigger end of scrapping
 class TestScrapProfile(TestCase):
     def testBacardiPinaColada(self):
@@ -144,14 +143,14 @@ class TestScrapIngredients(TestCase):
         self.assertTrue(recipe.ingredients[1] == 'W.L. Weller Special Reserve bourbon')
         self.assertTrue(recipe.ingredients[2] == 'Cream sherry')
         self.assertTrue(recipe.ingredients[3] == 'Carpano Antica Formula vermouth')
-        self.assertTrue(recipe.ingredients[4] == 'Woodford Reserve spiced cherry bourbon-barrel-aged bitters ')  # space at the end, is in the name on webpage
+        self.assertTrue(recipe.ingredients[4] == 'Woodford Reserve spiced cherry bourbon-barrel-aged bitters')
         self.assertTrue(recipe.ingredients[5] == 'Angostura bitters')
 
     def testVeranoEnValencia(self):
         recipe = Recipe.Recipe()
         scraper.scrap_ingredients(verano_en_valencia, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Azuñia reposado organic tequila')
-        self.assertTrue(recipe.ingredients[1] == 'Taylor Fladgate dry white port ')  # TODO space at the end, why is it here? - get rid of it
+        self.assertTrue(recipe.ingredients[1] == 'Taylor Fladgate dry white port')
         self.assertTrue(recipe.ingredients[2] == 'Giffard apricot liqueur')
         self.assertTrue(recipe.ingredients[3] == 'Fresh lemon juice')
         self.assertTrue(recipe.ingredients[4] == 'Fever-Tree Mediterranean tonic water')

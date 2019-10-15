@@ -50,7 +50,6 @@ def scrap_title(page, recipe):
 
 
 def scrap_ingredients(page, recipe):
-    # TODO some ingredients have trailing space get rid of it
     ingredient_class = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
     # some ingredients have '*' in name
     lines_with_ingredients = ingredient_class.replace('*', '').split('\n')
@@ -59,9 +58,12 @@ def scrap_ingredients(page, recipe):
 
     for ingredientLine in lines_with_ingredients:
         if ingredient_without_link.search(ingredientLine) is not None and ingredientLine.find('href') == -1:
-            recipe.ingredients.append(ingredient_without_link.search(ingredientLine).group(1))
+            ingredient = ingredient_without_link.search(ingredientLine).group(1)
+            # some ingredients have trailing space
+            recipe.ingredients.append(ingredient.strip())
         if ingredient_containing_link.search(ingredientLine) is not None and ingredientLine.find('href') != -1:
-            recipe.ingredients.append(ingredient_containing_link.search(ingredientLine).group(1))
+            ingredient = ingredient_containing_link.search(ingredientLine).group(1)
+            recipe.ingredients.append(ingredient.strip())
 
 
 def scrap_profile(page, recipe):
