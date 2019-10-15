@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
-import re
 
+import CompiledRegExs
 import Recipe
 
 
@@ -22,19 +22,19 @@ def getRecipes():
 
 
 def scrapRecipe(recipeLink):
+    page = parsePageFromLink(recipeLink)
     recipe = Recipe.Recipe()
-    scrapIngredients(recipeLink, recipe)
-    scrapProfile(recipeLink, recipe)
-    scrapGlass(recipeLink, recipe)
+    scrapIngredients(page, recipe)
+    scrapProfile(page, recipe)
+    scrapGlass(page, recipe)
     print(recipe)
 
 
-def scrapIngredients(recipeLink, recipe):
-    page = parsePageFromLink(recipeLink)
+def scrapIngredients(page, recipe):
     ingredientClass = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
     ingredientList = ingredientClass.split("\n")
-    simpleIngredientsRegex = re.compile(r'(.*)</div>')
-    complexIngredientsRegex = re.compile(r'style="text-decoration: underline;">(.*)</a> </div>')
+    simpleIngredientsRegex = compiledRegExs.simpleIngredientsRegEx
+    complexIngredientsRegex = compiledRegExs.complexIngredientsRegEx
 
     for ingredientLine in ingredientList:
         # extracts ingredients (not containing link to that ingredient)
@@ -45,17 +45,15 @@ def scrapIngredients(recipeLink, recipe):
             recipe.ingredients.append(complexIngredientsRegex.search(ingredientLine).group(1))
 
 
-def scrapProfile(recipeLink, recipe):
-    page = parsePageFromLink(recipeLink)
+def scrapProfile(page, recipe):
     recipe.name = removeCocktailRecipeStringFromEndOfTitle(page.title.string)
 
     for link in page.find_all('a'):
         link = str(link)
-        # print(link)
 
-        for key, regularExpreasion in listOfProfileRegularExpressions.items():
+        for key, regularExpreasion in compiledRegExs.dictOfCompiledProfileRegExs.items():
             profileRe = re.compile(regularExpreasion)
-            if profileRe.search(link) is not None:
+            if regularExpreasion.search(link) is not None:
 
                 # there are cocktailTypes at the end of page that doesn't belong to recipe once we reach them recipe
                 # is scrapped ad we can end
@@ -65,11 +63,9 @@ def scrapProfile(recipeLink, recipe):
                 fillRecipeProfileValues(key, profileRe.search(link).group(2), recipe)
 
 
-def scrapGlass(recipeLink, recipe):
-    page = parsePageFromLink(recipeLink)
+def scrapGlass(page, recipe):
     lineWithGlass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
-    glassRe = re.compile(r'/?post_type=recipe&amp;s=(.*)">(.*)</a></div>')
-    text = glassRe.search(lineWithGlass).group(2)
+    text = compiledRegExs.glassRegEx.search(lineWithGlass).group(2)
     text = text.split(' or ')  # there can be cocktails which can be served in 'glass1' or 'glass2'
     recipe.glass.extend(text)
 
@@ -114,24 +110,9 @@ def fillRecipeProfileValues(key, text, recipe):
         recipe.brands.append(text)
 
 
-listOfProfileRegularExpressions = {
-    'garnish': r'/?post_type=recipe&amp;s=(.*)"><span class="oz-value">(.*)</span><span class="ml-value"',
-    'flavor': r'/flavor-profile/(.*)/?post_type=recipe">(.*)</a>',
-    'base': r'/base/(.*)/?post_type=recipe">(.*)</a>',
-    'cocktailType': r'/recipe-type/(.*)/?post_type=recipe">(.*)</a>',
-    'served': r'/way-to-serve/(.*)/?post_type=recipe">(.*)</a>',
-    'preparation': r'/preparation/(.*)/?post_type=recipe">(.*)</a>',
-    'strength': r'/strength/(.*)/?post_type=recipe">(.*)</a>',
-    'difficulty': r'/complexity/(.*)/?post_type=recipe">(.*)</a>',
-    'hours': r'/hours/(.*)/?post_type=recipe">(.*)</a>',
-    'occasions': r'/occasions/(.*)/?post_type=recipe">(.*)</a>',
-    'theme': r'/theme/(.*)/?post_type=recipe">(.*)</a>',
-    'brands': r'/?post_type=brand&amp;s=(.*)">(.*)</a>',
-}
-
-
 headers = requests.utils.default_headers()
 headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
+compiledRegExs = CompiledRegExs.CompiledRegExs()
 pagesWithRecipesToLoad = 48  # there is currently 48 pages
 
 pagesWithRecipes = []

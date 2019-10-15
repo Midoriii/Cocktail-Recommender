@@ -6,19 +6,19 @@ import Recipe
 
 headers = requests.utils.default_headers()
 headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
-bacardiPinaColadaLink = 'https://www.liquor.com/recipes/bacardi-pina-colada'
-smokeBreakLink = 'https://www.liquor.com/recipes/smoke-break'
-veranoEnValenciaLink = 'https://www.liquor.com/recipes/azunia-verano-en-valencia'
-hydrateLink = 'https://www.liquor.com/recipes/hydrate'
-royalBalmoralPunchLink = 'https://www.liquor.com/recipes/royal-balmoral-punch'
-getOffMyIsle = 'https://www.liquor.com/recipes/mozart-get-off-my-isle'  # recipe with two glasses, and have occasions in profile
+bacardiPinaColada = scraper.parsePageFromLink('https://www.liquor.com/recipes/bacardi-pina-colada')
+smokeBreak = scraper.parsePageFromLink('https://www.liquor.com/recipes/smoke-break')
+veranoEnValencia = scraper.parsePageFromLink('https://www.liquor.com/recipes/azunia-verano-en-valencia')
+hydrate = scraper.parsePageFromLink('https://www.liquor.com/recipes/hydrate')
+royalBalmoralPunch = scraper.parsePageFromLink('https://www.liquor.com/recipes/royal-balmoral-punch')
+getOffMyIsle = scraper.parsePageFromLink('https://www.liquor.com/recipes/mozart-get-off-my-isle')  # recipe with two glasses, and have occasions in profile
 
 
 # TODO granish is not done yet
 class TestScrapProfile(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(bacardiPinaColadaLink, recipe)
+        scraper.scrapProfile(bacardiPinaColada, recipe)
         self.assertTrue(recipe.garnish[0] == 'Pineapple slice')
         self.assertTrue(recipe.garnish[1] == 'Pineapple leaf')
         self.assertTrue(recipe.flavor[0] == 'Fruity/Citrus-forward')
@@ -36,7 +36,7 @@ class TestScrapProfile(TestCase):
 
     def testSmokeBreak(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(smokeBreakLink, recipe)
+        scraper.scrapProfile(smokeBreak, recipe)
         self.assertTrue(recipe.garnish[0] == 'Dark chocolate')
         self.assertTrue(recipe.garnish[1] == 'Dried black cherries')
         self.assertTrue(recipe.flavor[0] == 'Smoky')
@@ -58,7 +58,7 @@ class TestScrapProfile(TestCase):
 
     def testVeranoEnValencia(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(veranoEnValenciaLink, recipe)
+        scraper.scrapProfile(veranoEnValencia, recipe)
         self.assertTrue(recipe.garnish[0] == 'Thyme sprigs')
         self.assertTrue(recipe.garnish[1] == 'Dehydrated lemon wheel')
         self.assertTrue(recipe.flavor[0] == 'Fruity/Citrus-forward')
@@ -79,7 +79,7 @@ class TestScrapProfile(TestCase):
 
     def testHydrate(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(hydrateLink, recipe)
+        scraper.scrapProfile(hydrate, recipe)
         self.assertTrue(recipe.garnish[0] == 'Cucumber slice')
         self.assertTrue(recipe.garnish[1] == 'Mint sprig')
         self.assertTrue(recipe.flavor[0] == 'Fruity/Citrus-forward')
@@ -97,7 +97,7 @@ class TestScrapProfile(TestCase):
 
     def testRoyalBalmoralPunch(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(royalBalmoralPunchLink, recipe)
+        scraper.scrapProfile(royalBalmoralPunch, recipe)
         self.assertTrue(recipe.garnish[0] == 'Lemon wheel')
         self.assertTrue(recipe.flavor[0] == 'Sour')
         self.assertTrue(recipe.flavor[1] == 'Sweet')
@@ -131,7 +131,7 @@ class TestScrapProfile(TestCase):
 class TestScrapIngredients(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(bacardiPinaColadaLink, recipe)
+        scraper.scrapIngredients(bacardiPinaColada, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Bacardí Superior rum')
         self.assertTrue(recipe.ingredients[1] == 'Fresh coconut water')
         self.assertTrue(recipe.ingredients[2] == 'Fresh pineapple juice')
@@ -140,8 +140,7 @@ class TestScrapIngredients(TestCase):
 
     def testSmokeBreak(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(smokeBreakLink, recipe)
-        print(recipe.ingredients)
+        scraper.scrapIngredients(smokeBreak, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Cherrywood chips')
         self.assertTrue(recipe.ingredients[1] == 'W.L. Weller Special Reserve bourbon')
         self.assertTrue(recipe.ingredients[2] == 'Cream sherry')
@@ -151,7 +150,7 @@ class TestScrapIngredients(TestCase):
 
     def testVeranoEnValencia(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(veranoEnValenciaLink, recipe)
+        scraper.scrapIngredients(veranoEnValencia, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Azuñia reposado organic tequila')
         self.assertTrue(recipe.ingredients[1] == 'Taylor Fladgate dry white port ')  # TODO space at the end, why is it here? - get rid of it
         self.assertTrue(recipe.ingredients[2] == 'Giffard apricot liqueur')
@@ -160,8 +159,7 @@ class TestScrapIngredients(TestCase):
 
     def testHydrate(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(hydrateLink, recipe)
-        print(recipe.ingredients)
+        scraper.scrapIngredients(hydrate, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Organic cucumber vodka')
         self.assertTrue(recipe.ingredients[1] == 'Puréed watermelon')
         self.assertTrue(recipe.ingredients[2] == 'Fresh lime juice')
@@ -169,7 +167,7 @@ class TestScrapIngredients(TestCase):
 
     def testRoyalBalmoralPunch(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(royalBalmoralPunchLink, recipe)
+        scraper.scrapIngredients(royalBalmoralPunch, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Glenfiddich 21-year-old single-malt scotch')
         self.assertTrue(recipe.ingredients[1] == 'Tea syrup')
         self.assertTrue(recipe.ingredients[2] == 'Granny Smith apple juice')
@@ -190,27 +188,27 @@ class TestScrapIngredients(TestCase):
 class TestScrapGlass(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(bacardiPinaColadaLink, recipe)
+        scraper.scrapGlass(bacardiPinaColada, recipe)
         self.assertTrue(recipe.glass[0] == 'Hurricane')
 
     def testSmokeBreak(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(smokeBreakLink, recipe)
+        scraper.scrapGlass(smokeBreak, recipe)
         self.assertTrue(recipe.glass[0] == 'Rocks')
 
     def testVeranoEnValencia(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(veranoEnValenciaLink, recipe)
+        scraper.scrapGlass(veranoEnValencia, recipe)
         self.assertTrue(recipe.glass[0] == 'Wine')
 
     def testHydrate(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(hydrateLink, recipe)
+        scraper.scrapGlass(hydrate, recipe)
         self.assertTrue(recipe.glass[0] == 'Martini')
 
     def testRoyalBalmoralPunch(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(royalBalmoralPunchLink, recipe)
+        scraper.scrapGlass(royalBalmoralPunch, recipe)
         self.assertTrue(recipe.glass[0] == 'Teacup')
 
     def getOffMyIsle(self):
@@ -218,7 +216,4 @@ class TestScrapGlass(TestCase):
         scraper.scrapGlass(getOffMyIsle, recipe)
         self.assertTrue(recipe.glass[0] == 'Highball')
         self.assertTrue(recipe.glass[1] == 'Collins')
-
-
-
 
