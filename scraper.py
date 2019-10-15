@@ -24,10 +24,17 @@ def getRecipes():
 def scrapRecipe(recipeLink):
     page = parsePageFromLink(recipeLink)
     recipe = Recipe.Recipe()
+    scrapTitle(page, recipe)
     scrapIngredients(page, recipe)
     scrapProfile(page, recipe)
     scrapGlass(page, recipe)
     print(recipe)
+
+
+def scrapTitle(page, recipe):
+    title = page.title.string
+    index = title.find('Cocktail Recipe')
+    recipe.name = title[:index]
 
 
 def scrapIngredients(page, recipe):
@@ -46,13 +53,10 @@ def scrapIngredients(page, recipe):
 
 
 def scrapProfile(page, recipe):
-    recipe.name = removeCocktailRecipeStringFromEndOfTitle(page.title.string)
-
     for link in page.find_all('a'):
         link = str(link)
 
         for key, regularExpreasion in compiledRegExs.dictOfCompiledProfileRegExs.items():
-            profileRe = re.compile(regularExpreasion)
             if regularExpreasion.search(link) is not None:
 
                 # there are cocktailTypes at the end of page that doesn't belong to recipe once we reach them recipe
@@ -60,7 +64,7 @@ def scrapProfile(page, recipe):
                 if key == 'cocktailType' and recipe.brands != []:
                     break
 
-                fillRecipeProfileValues(key, profileRe.search(link).group(2), recipe)
+                fillRecipeProfileValues(key, regularExpreasion.search(link).group(2), recipe)
 
 
 def scrapGlass(page, recipe):
@@ -73,12 +77,6 @@ def scrapGlass(page, recipe):
 def parsePageFromLink(link):
     pageRequest = requests.get(link, headers)
     return BeautifulSoup(pageRequest.text, 'html.parser')
-
-
-def removeCocktailRecipeStringFromEndOfTitle(title):
-    # Title has string 'Cocktail Recipe' at the end this function removes it
-    index = title.find('Cocktail Recipe')
-    return title[:index]
 
 
 def fillRecipeProfileValues(key, text, recipe):
