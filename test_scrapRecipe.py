@@ -6,19 +6,19 @@ import Recipe
 
 headers = requests.utils.default_headers()
 headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
-bacardiPinaColada = scraper.parsePageFromLink('https://www.liquor.com/recipes/bacardi-pina-colada')
-smokeBreak = scraper.parsePageFromLink('https://www.liquor.com/recipes/smoke-break')
-veranoEnValencia = scraper.parsePageFromLink('https://www.liquor.com/recipes/azunia-verano-en-valencia')
-hydrate = scraper.parsePageFromLink('https://www.liquor.com/recipes/hydrate')
-royalBalmoralPunch = scraper.parsePageFromLink('https://www.liquor.com/recipes/royal-balmoral-punch')
-getOffMyIsle = scraper.parsePageFromLink('https://www.liquor.com/recipes/mozart-get-off-my-isle')  # recipe with two glasses, and have occasions in profile
+
+bacardi_pina_colada = scraper.parse_page_from_link('https://www.liquor.com/recipes/bacardi-pina-colada')
+smoke_break = scraper.parse_page_from_link('https://www.liquor.com/recipes/smoke-break')
+verano_en_valencia = scraper.parse_page_from_link('https://www.liquor.com/recipes/azunia-verano-en-valencia')
+hydrate = scraper.parse_page_from_link('https://www.liquor.com/recipes/hydrate')
+royal_balmoral_punch = scraper.parse_page_from_link('https://www.liquor.com/recipes/royal-balmoral-punch')
+get_off_my_isle = scraper.parse_page_from_link('https://www.liquor.com/recipes/mozart-get-off-my-isle')  # recipe with two glasses, and have occasions in profile
 
 
-# TODO granish is not done yet
 class TestScrapProfile(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(bacardiPinaColada, recipe)
+        scraper.scrap_profile(bacardi_pina_colada, recipe)
         self.assertTrue(recipe.garnish[0] == 'Pineapple slice')
         self.assertTrue(recipe.garnish[1] == 'Pineapple leaf')
         self.assertTrue(recipe.flavor[0] == 'Fruity/Citrus-forward')
@@ -36,7 +36,7 @@ class TestScrapProfile(TestCase):
 
     def testSmokeBreak(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(smokeBreak, recipe)
+        scraper.scrap_profile(smoke_break, recipe)
         self.assertTrue(recipe.garnish[0] == 'Dark chocolate')
         self.assertTrue(recipe.garnish[1] == 'Dried black cherries')
         self.assertTrue(recipe.flavor[0] == 'Smoky')
@@ -58,7 +58,7 @@ class TestScrapProfile(TestCase):
 
     def testVeranoEnValencia(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(veranoEnValencia, recipe)
+        scraper.scrap_profile(verano_en_valencia, recipe)
         self.assertTrue(recipe.garnish[0] == 'Thyme sprigs')
         self.assertTrue(recipe.garnish[1] == 'Dehydrated lemon wheel')
         self.assertTrue(recipe.flavor[0] == 'Fruity/Citrus-forward')
@@ -79,7 +79,7 @@ class TestScrapProfile(TestCase):
 
     def testHydrate(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(hydrate, recipe)
+        scraper.scrap_profile(hydrate, recipe)
         self.assertTrue(recipe.garnish[0] == 'Cucumber slice')
         self.assertTrue(recipe.garnish[1] == 'Mint sprig')
         self.assertTrue(recipe.flavor[0] == 'Fruity/Citrus-forward')
@@ -97,7 +97,7 @@ class TestScrapProfile(TestCase):
 
     def testRoyalBalmoralPunch(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(royalBalmoralPunch, recipe)
+        scraper.scrap_profile(royal_balmoral_punch, recipe)
         self.assertTrue(recipe.garnish[0] == 'Lemon wheel')
         self.assertTrue(recipe.flavor[0] == 'Sour')
         self.assertTrue(recipe.flavor[1] == 'Sweet')
@@ -114,7 +114,7 @@ class TestScrapProfile(TestCase):
 
     def getOffMyIsle(self):
         recipe = Recipe.Recipe()
-        scraper.scrapProfile(getOffMyIsle, recipe)
+        scraper.scrap_profile(get_off_my_isle, recipe)
         self.assertTrue(recipe.garnish[0] == 'Dark chocolate shaving')
         self.assertTrue(recipe.flavor[0] == 'Sweet')
         self.assertTrue(recipe.base[0] == 'Scotch')
@@ -131,7 +131,7 @@ class TestScrapProfile(TestCase):
 class TestScrapIngredients(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(bacardiPinaColada, recipe)
+        scraper.scrap_ingredients(bacardi_pina_colada, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Bacardí Superior rum')
         self.assertTrue(recipe.ingredients[1] == 'Fresh coconut water')
         self.assertTrue(recipe.ingredients[2] == 'Fresh pineapple juice')
@@ -140,7 +140,7 @@ class TestScrapIngredients(TestCase):
 
     def testSmokeBreak(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(smokeBreak, recipe)
+        scraper.scrap_ingredients(smoke_break, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Cherrywood chips')
         self.assertTrue(recipe.ingredients[1] == 'W.L. Weller Special Reserve bourbon')
         self.assertTrue(recipe.ingredients[2] == 'Cream sherry')
@@ -150,7 +150,7 @@ class TestScrapIngredients(TestCase):
 
     def testVeranoEnValencia(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(veranoEnValencia, recipe)
+        scraper.scrap_ingredients(verano_en_valencia, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Azuñia reposado organic tequila')
         self.assertTrue(recipe.ingredients[1] == 'Taylor Fladgate dry white port ')  # TODO space at the end, why is it here? - get rid of it
         self.assertTrue(recipe.ingredients[2] == 'Giffard apricot liqueur')
@@ -159,7 +159,7 @@ class TestScrapIngredients(TestCase):
 
     def testHydrate(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(hydrate, recipe)
+        scraper.scrap_ingredients(hydrate, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Organic cucumber vodka')
         self.assertTrue(recipe.ingredients[1] == 'Puréed watermelon')
         self.assertTrue(recipe.ingredients[2] == 'Fresh lime juice')
@@ -167,7 +167,7 @@ class TestScrapIngredients(TestCase):
 
     def testRoyalBalmoralPunch(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(royalBalmoralPunch, recipe)
+        scraper.scrap_ingredients(royal_balmoral_punch, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Glenfiddich 21-year-old single-malt scotch')
         self.assertTrue(recipe.ingredients[1] == 'Tea syrup')
         self.assertTrue(recipe.ingredients[2] == 'Granny Smith apple juice')
@@ -177,7 +177,7 @@ class TestScrapIngredients(TestCase):
 
     def getOffMyIsle(self):
         recipe = Recipe.Recipe()
-        scraper.scrapIngredients(getOffMyIsle, recipe)
+        scraper.scrap_ingredients(get_off_my_isle, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Peanut butter-washed scotch')
         self.assertTrue(recipe.ingredients[1] == 'Mozart chocolate cream liqueur')
         self.assertTrue(recipe.ingredients[2] == 'Cookie dough liqueur')
@@ -188,32 +188,31 @@ class TestScrapIngredients(TestCase):
 class TestScrapGlass(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(bacardiPinaColada, recipe)
+        scraper.scrap_glass(bacardi_pina_colada, recipe)
         self.assertTrue(recipe.glass[0] == 'Hurricane')
 
     def testSmokeBreak(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(smokeBreak, recipe)
+        scraper.scrap_glass(smoke_break, recipe)
         self.assertTrue(recipe.glass[0] == 'Rocks')
 
     def testVeranoEnValencia(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(veranoEnValencia, recipe)
+        scraper.scrap_glass(verano_en_valencia, recipe)
         self.assertTrue(recipe.glass[0] == 'Wine')
 
     def testHydrate(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(hydrate, recipe)
+        scraper.scrap_glass(hydrate, recipe)
         self.assertTrue(recipe.glass[0] == 'Martini')
 
     def testRoyalBalmoralPunch(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(royalBalmoralPunch, recipe)
+        scraper.scrap_glass(royal_balmoral_punch, recipe)
         self.assertTrue(recipe.glass[0] == 'Teacup')
 
     def getOffMyIsle(self):
         recipe = Recipe.Recipe()
-        scraper.scrapGlass(getOffMyIsle, recipe)
+        scraper.scrap_glass(get_off_my_isle, recipe)
         self.assertTrue(recipe.glass[0] == 'Highball')
         self.assertTrue(recipe.glass[1] == 'Collins')
-

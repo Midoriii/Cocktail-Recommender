@@ -4,8 +4,8 @@ import re
 class CompiledRegExs:
     def __init__(self):
         self.glassRegEx = re.compile(r'/?post_type=recipe&amp;s=(.*)">(.*)</a></div>')
-        self.simpleIngredientsRegEx = re.compile(r'(.*)</div>')
-        self.complexIngredientsRegEx = re.compile(r'style="text-decoration: underline;">(.*)</a> </div>')
+        self.ingredientWithoutLinkRegEx = re.compile(r'(.*)</div>')
+        self.ingredientContainingLinkRegEx = re.compile(r'style="text-decoration: underline;">(.*)</a> </div>')
 
         self.garnish = re.compile(r'/?post_type=recipe&amp;s=(.*)"><span class="oz-value">(.*)</span><span class="ml-value"')
         self.flavor = re.compile(r'/flavor-profile/(.*)/?post_type=recipe">(.*)</a>')

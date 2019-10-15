@@ -1,4 +1,6 @@
 """Class which holds all information about recipe"""
+
+
 class Recipe:
     def __init__(self):
         # lists because some fields can have multiple values
@@ -34,5 +36,3 @@ class Recipe:
                 "occasions : " + ", ".join(self.hours) + "\n" +
                 "theme : " + ", ".join(self.theme) + "\n" +
                 "brands : " + ", ".join(self.brands))
-
-

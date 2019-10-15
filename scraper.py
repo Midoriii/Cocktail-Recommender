@@ -5,106 +5,102 @@ import CompiledRegExs
 import Recipe
 
 
-def getPagesWithRecipes():
+def get_pages_with_recipes():
     for i in range(pagesWithRecipesToLoad):
         pagesWithRecipes.append("https://www.liquor.com/recipes/page/" + str(i) + "/")
 
 
-def getRecipes():
+def get_recipes():
     for recipePage in pagesWithRecipes:
-        page = parsePageFromLink(recipePage)
+        page = parse_page_from_link(recipePage)
 
         for link in page.find_all('a'):
             link = str(link.get('href'))
-            if link.find("https://www.liquor.com/recipes") != -1 and link.find("https://www.liquor.com/recipes/page") == -1:
+            if link.find("https://www.liquor.com/recipes") != -1 and link.find(
+                    "https://www.liquor.com/recipes/page") == -1:
                 if link not in recipePages:
                     recipePages.append(link)
 
 
-def scrapRecipe(recipeLink):
-    page = parsePageFromLink(recipeLink)
+def parse_page_from_link(link):
+    page_request = requests.get(link, headers)
+    return BeautifulSoup(page_request.text, 'html.parser')
+
+
+def scrap_recipe(recipe_link):
+    page = parse_page_from_link(recipe_link)
     recipe = Recipe.Recipe()
-    scrapTitle(page, recipe)
-    scrapIngredients(page, recipe)
-    scrapProfile(page, recipe)
-    scrapGlass(page, recipe)
-    print(recipe)
+    scrap_title(page, recipe)
+    scrap_ingredients(page, recipe)
+    scrap_profile(page, recipe)
+    scrap_glass(page, recipe)
 
 
-def scrapTitle(page, recipe):
+def scrap_title(page, recipe):
     title = page.title.string
-    index = title.find('Cocktail Recipe')
+    index = title.find('Cocktail Recipe')  # each recipe title contains string 'Cocktail Recipe' at the end
     recipe.name = title[:index]
 
 
-def scrapIngredients(page, recipe):
-    ingredientClass = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
-    ingredientList = ingredientClass.split("\n")
-    simpleIngredientsRegex = compiledRegExs.simpleIngredientsRegEx
-    complexIngredientsRegex = compiledRegExs.complexIngredientsRegEx
+def scrap_ingredients(page, recipe):
+    ingredient_class = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
+    lines_with_ingredients = ingredient_class.split("\n")
+    ingredient_without_link = compiledRegExs.ingredientWithoutLinkRegEx
+    ingredient_containing_link = compiledRegExs.ingredientContainingLinkRegEx
 
-    for ingredientLine in ingredientList:
-        # extracts ingredients (not containing link to that ingredient)
-        if simpleIngredientsRegex.search(ingredientLine) is not None and ingredientLine.find('href') == -1:
-            recipe.ingredients.append(simpleIngredientsRegex.search(ingredientLine).group(1))
-        # extracts ingredients with associated link
-        if complexIngredientsRegex.search(ingredientLine) is not None and ingredientLine.find('href') != -1:
-            recipe.ingredients.append(complexIngredientsRegex.search(ingredientLine).group(1))
+    for ingredientLine in lines_with_ingredients:
+        if ingredient_without_link.search(ingredientLine) is not None and ingredientLine.find('href') == -1:
+            recipe.ingredients.append(ingredient_without_link.search(ingredientLine).group(1))
+        if ingredient_containing_link.search(ingredientLine) is not None and ingredientLine.find('href') != -1:
+            recipe.ingredients.append(ingredient_containing_link.search(ingredientLine).group(1))
 
 
-def scrapProfile(page, recipe):
+def scrap_profile(page, recipe):
     for link in page.find_all('a'):
         link = str(link)
 
-        for key, regularExpreasion in compiledRegExs.dictOfCompiledProfileRegExs.items():
-            if regularExpreasion.search(link) is not None:
-
-                # there are cocktailTypes at the end of page that doesn't belong to recipe once we reach them recipe
-                # is scrapped ad we can end
-                if key == 'cocktailType' and recipe.brands != []:
+        for recipeAttribute, regularExpresion in compiledRegExs.dictOfCompiledProfileRegExs.items():
+            if regularExpresion.search(link) is not None:
+                # there are cocktailTypes at the end of page that doesn't belong to recipe once we reach cocktailType
+                # and last item of recipe (brands) has been filled we know that we are at the end
+                if recipeAttribute == 'cocktailType' and recipe.brands != []:
                     break
+                fill_recipe_profile_values(recipeAttribute, regularExpresion.search(link).group(2), recipe)
 
-                fillRecipeProfileValues(key, regularExpreasion.search(link).group(2), recipe)
 
-
-def scrapGlass(page, recipe):
-    lineWithGlass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
-    text = compiledRegExs.glassRegEx.search(lineWithGlass).group(2)
-    text = text.split(' or ')  # there can be cocktails which can be served in 'glass1' or 'glass2'
+def scrap_glass(page, recipe):
+    line_with_glass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
+    text = compiledRegExs.glassRegEx.search(line_with_glass).group(2)
+    text = text.split(' or ')  # glass can have more than one item separated by string ' or ' e.g. 'glass1 or glass2'
     recipe.glass.extend(text)
 
 
-def parsePageFromLink(link):
-    pageRequest = requests.get(link, headers)
-    return BeautifulSoup(pageRequest.text, 'html.parser')
-
-
-def fillRecipeProfileValues(key, text, recipe):
-    if key == 'garnish':
+def fill_recipe_profile_values(recipe_attribute, text, recipe):
+    if recipe_attribute == 'garnish':
         # garnish can have more than one item separated by semicolon
         text = text.split('; ')
         recipe.garnish.extend(text)
-    if key == 'flavor':
+    if recipe_attribute == 'flavor':
         recipe.flavor.append(text)
-    if key == 'base':
+    if recipe_attribute == 'base':
         recipe.base.append(text)
-    if key == 'cocktailType':
+    if recipe_attribute == 'cocktailType':
         recipe.cocktailType.append(text)
-    if key == 'served':
+    if recipe_attribute == 'served':
         recipe.served.append(text)
-    if key == 'preparation':
+    if recipe_attribute == 'preparation':
         recipe.preparation.append(text)
-    if key == 'strength':
+    if recipe_attribute == 'strength':
         recipe.strength.append(text)
-    if key == 'difficulty':
+    if recipe_attribute == 'difficulty':
         recipe.difficulty.append(text)
-    if key == 'hours':
+    if recipe_attribute == 'hours':
         recipe.hours.append(text)
-    if key == 'occasions':
+    if recipe_attribute == 'occasions':
         recipe.hours.append(text)
-    if key == 'theme':
+    if recipe_attribute == 'theme':
         recipe.theme.append(text)
-    if key == 'brands':
+    if recipe_attribute == 'brands':
         recipe.brands.append(text)
 
 
@@ -119,7 +115,4 @@ recipePages = []
 # getPagesWithRecipes()
 # getRecipes()
 testRecipeLink = 'https://www.liquor.com/recipes/azunia-verano-en-valencia'
-scrapRecipe(testRecipeLink)
-
-print("\n".join(recipePages))
-print(len(recipePages))
+scrap_recipe(testRecipeLink)
