@@ -11,8 +11,8 @@ get_off_my_isle = scraper.parse_page_from_link('https://www.liquor.com/recipes/m
 kiwi_bird = scraper.parse_page_from_link('https://www.liquor.com/recipes/kiwi-bird')  # trailing **
 bourbon_toscano = scraper.parse_page_from_link('https://www.liquor.com/recipes/bourbon-toscano')  # * is the first character
 haileys_comet = scraper.parse_page_from_link('https://www.liquor.com/recipes/haileys-comet')  # garnish with *
+bacardi_lime_cranberry = scraper.parse_page_from_link('https://www.liquor.com/recipes/bacardi-lime-cranberry')  # has no glass
 
-# TODO add tests for recipes with missing brands which cannot trigger end of scrapping
 class TestScrapProfile(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
@@ -214,6 +214,11 @@ class TestScrapGlass(TestCase):
         scraper.scrap_glass(get_off_my_isle, recipe)
         self.assertTrue(recipe.glass[0] == 'Highball')
         self.assertTrue(recipe.glass[1] == 'Collins')
+
+    def bacardi_lime_cranberry(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_glass(get_off_my_isle, recipe)
+        self.assertTrue(len(recipe.glass) == 0)
 
 
 class TestStarCharNotPresent(TestCase):

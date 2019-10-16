@@ -80,9 +80,10 @@ def scrap_profile(page, recipe):
 
 def scrap_glass(page, recipe):
     line_with_glass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
-    text = compiledRegExs.glassRegEx.search(line_with_glass).group(2)
-    text = text.split(' or ')  # glass can have more than one item separated by string ' or ' e.g. 'glass1 or glass2'
-    recipe.glass.extend(text)
+    if compiledRegExs.glassRegEx.search(line_with_glass) is not None:
+        text = compiledRegExs.glassRegEx.search(line_with_glass).group(2)
+        text = text.split(' or ')  # glass can have more than one item separated by string ' or ' e.g. 'glass1 or glass2'
+        recipe.glass.extend(text)
 
 
 def fill_recipe_profile_values(recipe_attribute, text, recipe):
@@ -130,12 +131,13 @@ if __name__ == "__main__":
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
     compiledRegExs = CompiledRegExs.CompiledRegExs()
-    pagesWithRecipesToLoad = 1  # there is currently 48 pages
+    pagesWithRecipesToLoad = 3  # there is currently 48 pages
 
     list_of_recipes = scrap_all_recipes()
 
     for recipe in list_of_recipes:
         print(recipe)
+    print(len(list_of_recipes))
 
     # testRecipeLink = 'https://www.liquor.com/recipes/smoke-break'
     # recipe = scrap_recipe(testRecipeLink)
