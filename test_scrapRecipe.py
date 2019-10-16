@@ -10,7 +10,7 @@ royal_balmoral_punch = scraper.parse_page_from_link('https://www.liquor.com/reci
 get_off_my_isle = scraper.parse_page_from_link('https://www.liquor.com/recipes/mozart-get-off-my-isle')  # recipe with two glasses, and have occasions in profile
 kiwi_bird = scraper.parse_page_from_link('https://www.liquor.com/recipes/kiwi-bird')  # trailing **
 bourbon_toscano = scraper.parse_page_from_link('https://www.liquor.com/recipes/bourbon-toscano')  # * is the first character
-haileys_comet = scraper.parse_page_from_link('https://www.liquor.com/recipes/haileys-comet/')  # garnish with *
+haileys_comet = scraper.parse_page_from_link('https://www.liquor.com/recipes/haileys-comet')  # garnish with *
 
 # TODO add tests for recipes with missing brands which cannot trigger end of scrapping
 class TestScrapProfile(TestCase):
@@ -235,3 +235,19 @@ class TestStarCharNotPresent(TestCase):
         scraper.scrap_ingredients(haileys_comet, recipe)
         recipe.clean_recipe_attributes()
         self.assertTrue(recipe.garnish[0] == 'Orgeat-chantilly cream')
+
+class TestScrappingEndsAfterBrands(TestCase):
+    def testBacardiPinaColada(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_profile(bacardi_pina_colada, recipe)
+        self.assertTrue(len(recipe.cocktailType) == 2)
+
+    def kiwiBird(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_profile(kiwi_bird, recipe)
+        self.assertTrue(len(recipe.cocktailType) == 1)
+
+    def haileysComet(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_profile(haileys_comet, recipe)
+        self.assertTrue(len(recipe.cocktailType) == 1)

@@ -69,13 +69,12 @@ def scrap_profile(page, recipe):
     for link in page.find_all('a'):
         link = str(link)
 
+        # this string occurs after all attributes are scrapped and we can therefore stop
+        if link == '<a id="spotim-comments" name="spotim-comments"></a>':
+            break
+
         for recipeAttribute, regularExpresion in compiledRegExs.dictOfCompiledProfileRegExs.items():
             if regularExpresion.search(link) is not None:
-                # there are cocktailTypes at the end of page that doesn't belong to recipe once we reach cocktailType
-                # and last item of recipe (brands) has been filled we know that we are at the end
-                # TODO not reliable some recipes don't have brands
-                if recipeAttribute == 'cocktailType' and recipe.brands != []:
-                    break
                 fill_recipe_profile_values(recipeAttribute, regularExpresion.search(link).group(2), recipe)
 
 
@@ -127,16 +126,22 @@ def scrap_all_recipes():
     return list_of_recipes
 
 
-headers = requests.utils.default_headers()
-headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
-compiledRegExs = CompiledRegExs.CompiledRegExs()
-
 if __name__ == "__main__":
+    headers = requests.utils.default_headers()
+    headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
+    compiledRegExs = CompiledRegExs.CompiledRegExs()
     pagesWithRecipesToLoad = 1  # there is currently 48 pages
-    # list_of_recipes = scrap_all_recipes()
-    # for recipe in list_of_recipes:
-    #     print(recipe)
 
-# testRecipeLink = 'https://www.liquor.com/recipes/smoke-break'
-# recipe = scrap_recipe(testRecipeLink)
-# print(recipe)
+    list_of_recipes = scrap_all_recipes()
+
+    for recipe in list_of_recipes:
+        print(recipe)
+
+    # testRecipeLink = 'https://www.liquor.com/recipes/smoke-break'
+    # recipe = scrap_recipe(testRecipeLink)
+    # print(recipe)
+else:
+    # for test purposes
+    headers = requests.utils.default_headers()
+    headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
+    compiledRegExs = CompiledRegExs.CompiledRegExs()
