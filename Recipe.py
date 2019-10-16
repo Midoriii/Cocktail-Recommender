@@ -38,3 +38,10 @@ class Recipe:
                 "Occasions:    " + ", ".join(self.occasions) + "\n" +
                 "Theme:        " + ", ".join(self.theme) + "\n" +
                 "Brands:       " + ", ".join(self.brands) + "\n")
+
+    ''' Removes trailing spaces and occasional '*' from ingredients and garnish'''
+    def clean_recipe_attributes(self):
+        for item in range(len(self.garnish)):
+            self.garnish[item] = self.garnish[item].strip().replace('*', '')
+        for item in range(len(self.ingredients)):
+            self.ingredients[item] = self.ingredients[item].strip().replace('*', '')

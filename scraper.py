@@ -40,6 +40,7 @@ def scrap_recipe(recipe_link):
     scrap_ingredients(page, recipe)
     scrap_profile(page, recipe)
     scrap_glass(page, recipe)
+    recipe.clean_recipe_attributes()
     return recipe
 
 
@@ -51,19 +52,17 @@ def scrap_title(page, recipe):
 
 def scrap_ingredients(page, recipe):
     ingredient_class = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
-    # some ingredients have '*' in name
-    lines_with_ingredients = ingredient_class.replace('*', '').split('\n')
+    lines_with_ingredients = ingredient_class.split('\n')
     ingredient_without_link = compiledRegExs.ingredientWithoutLinkRegEx
     ingredient_containing_link = compiledRegExs.ingredientContainingLinkRegEx
 
     for ingredientLine in lines_with_ingredients:
         if ingredient_without_link.search(ingredientLine) is not None and ingredientLine.find('href') == -1:
             ingredient = ingredient_without_link.search(ingredientLine).group(1)
-            # some ingredients have trailing space
-            recipe.ingredients.append(ingredient.strip())
+            recipe.ingredients.append(ingredient)
         if ingredient_containing_link.search(ingredientLine) is not None and ingredientLine.find('href') != -1:
             ingredient = ingredient_containing_link.search(ingredientLine).group(1)
-            recipe.ingredients.append(ingredient.strip())
+            recipe.ingredients.append(ingredient)
 
 
 def scrap_profile(page, recipe):
@@ -89,8 +88,7 @@ def scrap_glass(page, recipe):
 
 def fill_recipe_profile_values(recipe_attribute, text, recipe):
     if recipe_attribute == 'garnish':
-        # garnish can have more than one item separated by semicolon, and can contain '*'
-        text = text.replace('*', '').split('; ')
+        text = text.split('; ')
         recipe.garnish.extend(text)
     if recipe_attribute == 'flavor':
         recipe.flavor.append(text)
@@ -135,9 +133,10 @@ compiledRegExs = CompiledRegExs.CompiledRegExs()
 
 if __name__ == "__main__":
     pagesWithRecipesToLoad = 1  # there is currently 48 pages
-    list_of_recipes = scrap_all_recipes()
-    for recipe in list_of_recipes:
-        print(recipe)
+    # list_of_recipes = scrap_all_recipes()
+    # for recipe in list_of_recipes:
+    #     print(recipe)
 
-# testRecipeLink = 'https://www.liquor.com/recipes/azunia-verano-en-valencia'
-# scrap_recipe(testRecipeLink)
+# testRecipeLink = 'https://www.liquor.com/recipes/smoke-break'
+# recipe = scrap_recipe(testRecipeLink)
+# print(recipe)

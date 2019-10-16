@@ -8,7 +8,7 @@ verano_en_valencia = scraper.parse_page_from_link('https://www.liquor.com/recipe
 hydrate = scraper.parse_page_from_link('https://www.liquor.com/recipes/hydrate')
 royal_balmoral_punch = scraper.parse_page_from_link('https://www.liquor.com/recipes/royal-balmoral-punch')
 get_off_my_isle = scraper.parse_page_from_link('https://www.liquor.com/recipes/mozart-get-off-my-isle')  # recipe with two glasses, and have occasions in profile
-kiwi_bird = scraper.parse_page_from_link('https://www.liquor.com/recipes/kiwi-birdmoral-punch')  # trailing **
+kiwi_bird = scraper.parse_page_from_link('https://www.liquor.com/recipes/kiwi-bird')  # trailing **
 bourbon_toscano = scraper.parse_page_from_link('https://www.liquor.com/recipes/bourbon-toscano')  # * is the first character
 haileys_comet = scraper.parse_page_from_link('https://www.liquor.com/recipes/haileys-comet/')  # garnish with *
 
@@ -143,14 +143,14 @@ class TestScrapIngredients(TestCase):
         self.assertTrue(recipe.ingredients[1] == 'W.L. Weller Special Reserve bourbon')
         self.assertTrue(recipe.ingredients[2] == 'Cream sherry')
         self.assertTrue(recipe.ingredients[3] == 'Carpano Antica Formula vermouth')
-        self.assertTrue(recipe.ingredients[4] == 'Woodford Reserve spiced cherry bourbon-barrel-aged bitters')
+        self.assertTrue(recipe.ingredients[4] == 'Woodford Reserve spiced cherry bourbon-barrel-aged bitters ')
         self.assertTrue(recipe.ingredients[5] == 'Angostura bitters')
 
     def testVeranoEnValencia(self):
         recipe = Recipe.Recipe()
         scraper.scrap_ingredients(verano_en_valencia, recipe)
         self.assertTrue(recipe.ingredients[0] == 'Azuñia reposado organic tequila')
-        self.assertTrue(recipe.ingredients[1] == 'Taylor Fladgate dry white port')
+        self.assertTrue(recipe.ingredients[1] == 'Taylor Fladgate dry white port ')
         self.assertTrue(recipe.ingredients[2] == 'Giffard apricot liqueur')
         self.assertTrue(recipe.ingredients[3] == 'Fresh lemon juice')
         self.assertTrue(recipe.ingredients[4] == 'Fever-Tree Mediterranean tonic water')
@@ -220,15 +220,18 @@ class TestStarCharNotPresent(TestCase):
     def kiwiBird(self):
         recipe = Recipe.Recipe()
         scraper.scrap_ingredients(kiwi_bird, recipe)
+        recipe.clean_recipe_attributes()
         self.assertTrue(recipe.ingredients[2] == 'Coconut cream')
         self.assertTrue(recipe.ingredients[3] == 'Kiwi syrup')
 
     def bourbonToscano(self):
         recipe = Recipe.Recipe()
         scraper.scrap_ingredients(bourbon_toscano, recipe)
+        recipe.clean_recipe_attributes()
         self.assertTrue(recipe.ingredients[3] == 'Smoked ice cubes')
 
     def haileysComet(self):
         recipe = Recipe.Recipe()
         scraper.scrap_ingredients(haileys_comet, recipe)
+        recipe.clean_recipe_attributes()
         self.assertTrue(recipe.garnish[0] == 'Orgeat-chantilly cream')
