@@ -46,7 +46,7 @@ def scrap_recipe(recipe_link):
 
 def scrap_title(page, recipe):
     title = page.title.string
-    index = title.find('Cocktail Recipe')  # each recipe title contains string 'Cocktail Recipe' at the end
+    index = title.find(' Cocktail Recipe')  # each recipe title contains string 'Cocktail Recipe' at the end
     recipe.name = title[:index]
 
 
@@ -127,21 +127,36 @@ def scrap_all_recipes():
     return list_of_recipes
 
 
+def save_recipe_as_csv():
+    recipes_file = open('recipes.csv', 'w')
+    pages_with_recipes = get_pages_with_recipes()
+    recipe_pages = get_recipes(pages_with_recipes)
+    recipes_file.write("Link;Name;Ingredients;Garnish;Glass;Flavor;BaseSpirit;CocktailType;Preparation;Served;Strength;Difficulty;Hours;Occasions;Theme;Brands")
+
+    for recip_page in recipe_pages:
+        print('working on: ', recip_page)
+        recipe = scrap_recipe(recip_page)
+        recipes_file.write(recipe.generate_csv_string())
+
+    recipes_file.close()
+
+
 if __name__ == "__main__":
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
     compiledRegExs = CompiledRegExs.CompiledRegExs()
-    pagesWithRecipesToLoad = 3  # there is currently 48 pages
+    pagesWithRecipesToLoad = 1  # there is currently 48 pages
 
-    list_of_recipes = scrap_all_recipes()
+    # list_of_recipes = scrap_all_recipes()
+    #
+    # for recipe in list_of_recipes:
+    #     print(recipe)
+    # print(len(list_of_recipes))
 
-    for recipe in list_of_recipes:
-        print(recipe)
-    print(len(list_of_recipes))
-
-    # testRecipeLink = 'https://www.liquor.com/recipes/smoke-break'
-    # recipe = scrap_recipe(testRecipeLink)
-    # print(recipe)
+    testRecipeLink = 'https://www.liquor.com/recipes/smoke-break'
+    recipe = scrap_recipe(testRecipeLink)
+    print(recipe.generate_csv_string())
+    print(recipe)
 else:
     # for test purposes
     headers = requests.utils.default_headers()

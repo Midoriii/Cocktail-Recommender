@@ -28,7 +28,7 @@ class Recipe:
                 "Garnish:      " + ", ".join(self.garnish) + "\n" +
                 "Glass:        " + ", ".join(self.glass) + "\n" +
                 "Flavor:       " + ", ".join(self.flavor) + " \n" +
-                "Base Spirit:  " + ", ".join(self.base) + " \n" +
+                "BaseSpirit:   " + ", ".join(self.base) + " \n" +
                 "CocktailType: " + ", ".join(self.cocktailType) + "\n" +
                 "Preparation:  " + ", ".join(self.preparation) + "\n" +
                 "Served:       " + ", ".join(self.served) + "\n" +
@@ -38,6 +38,25 @@ class Recipe:
                 "Occasions:    " + ", ".join(self.occasions) + "\n" +
                 "Theme:        " + ", ".join(self.theme) + "\n" +
                 "Brands:       " + ", ".join(self.brands) + "\n")
+    
+    def generate_csv_string(self):
+        return (self.link + "," +
+                self.name + "," +
+                ";".join(self.ingredients) + "," +
+                ";".join(self.garnish) + "," +
+                ";".join(self.glass) + "," +
+                ";".join(self.flavor) + " ," +
+                ";".join(self.base) + " ," +
+                ";".join(self.cocktailType) + "," +
+                ";".join(self.preparation) + "," +
+                ";".join(self.served) + "," +
+                ";".join(self.strength) + "," +
+                ";".join(self.difficulty) + "," +
+                ";".join(self.hours) + "," +
+                ";".join(self.occasions) + "," +
+                ";".join(self.theme) + "," +
+                ";".join(self.brands) + ",")
+        
 
     ''' Removes trailing spaces and occasional '*' from ingredients and garnish'''
     def clean_recipe_attributes(self):
