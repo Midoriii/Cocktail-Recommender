@@ -53,15 +53,15 @@ def scrap_title(page, recipe):
 def scrap_ingredients(page, recipe):
     ingredient_class = str(page.findAll("div", {"class": "col-xs-9 x-recipe-ingredient"})).replace('\t', '')
     lines_with_ingredients = ingredient_class.split('\n')
-    ingredient_without_link = compiledRegExs.ingredientWithoutLinkRegEx
-    ingredient_containing_link = compiledRegExs.ingredientContainingLinkRegEx
+    ingredient_without_link = compiled_reg_exs.ingredient_without_link_reg_ex
+    ingredient_containing_link = compiled_reg_exs.ingredient_containing_link_reg_ex
 
-    for ingredientLine in lines_with_ingredients:
-        if ingredient_without_link.search(ingredientLine) is not None and ingredientLine.find('href') == -1:
-            ingredient = ingredient_without_link.search(ingredientLine).group(1)
+    for ingredient_line in lines_with_ingredients:
+        if ingredient_without_link.search(ingredient_line) is not None and ingredient_line.find('href') == -1:
+            ingredient = ingredient_without_link.search(ingredient_line).group(1)
             recipe.ingredients.append(ingredient)
-        if ingredient_containing_link.search(ingredientLine) is not None and ingredientLine.find('href') != -1:
-            ingredient = ingredient_containing_link.search(ingredientLine).group(1)
+        if ingredient_containing_link.search(ingredient_line) is not None and ingredient_line.find('href') != -1:
+            ingredient = ingredient_containing_link.search(ingredient_line).group(1)
             recipe.ingredients.append(ingredient)
 
 
@@ -73,15 +73,15 @@ def scrap_profile(page, recipe):
         if link == '<a id="spotim-comments" name="spotim-comments"></a>':
             break
 
-        for recipeAttribute, regularExpresion in compiledRegExs.dictOfCompiledProfileRegExs.items():
-            if regularExpresion.search(link) is not None:
-                fill_recipe_profile_values(recipeAttribute, regularExpresion.search(link).group(2), recipe)
+        for recipe_attribute, regular_expresion in compiled_reg_exs.dict_of_compiled_profile_reg_exs.items():
+            if regular_expresion.search(link) is not None:
+                fill_recipe_profile_values(recipe_attribute, regular_expresion.search(link).group(2), recipe)
 
 
 def scrap_glass(page, recipe):
     line_with_glass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
-    if compiledRegExs.glassRegEx.search(line_with_glass) is not None:
-        text = compiledRegExs.glassRegEx.search(line_with_glass).group(2)
+    if compiled_reg_exs.glass_reg_ex.search(line_with_glass) is not None:
+        text = compiled_reg_exs.glass_reg_ex.search(line_with_glass).group(2)
         text = text.split(' or ')  # glass can have more than one item separated by string ' or ' e.g. 'glass1 or glass2'
         recipe.glass.extend(text)
 
@@ -94,8 +94,8 @@ def fill_recipe_profile_values(recipe_attribute, text, recipe):
         recipe.flavor.append(text)
     if recipe_attribute == 'base':
         recipe.base.append(text)
-    if recipe_attribute == 'cocktailType':
-        recipe.cocktailType.append(text)
+    if recipe_attribute == 'cocktail_type':
+        recipe.cocktail_type.append(text)
     if recipe_attribute == 'served':
         recipe.served.append(text)
     if recipe_attribute == 'preparation':
@@ -119,23 +119,25 @@ def scrap_all_recipes():
     recipe_pages = get_recipes(pages_with_recipes)
 
     list_of_recipes = []
-    for recip_page in recipe_pages:
-        print('working on: ', recip_page)
-        recipe = scrap_recipe(recip_page)
+    for recipe_page in recipe_pages:
+        print('working on: ', recipe_page)
+        recipe = scrap_recipe(recipe_page)
         list_of_recipes.append(recipe)
 
     return list_of_recipes
 
 
-def save_recipe_as_csv():
+def save_all_recipes_as_csv():
     recipes_file = open('recipes.csv', 'w')
+    table_head = "Link,Name,Ingredients,Garnish,Glass,Flavor,BaseSpirit,CocktailType,Preparation,Served,Strength,Difficulty,Hours,Occasions,Theme,Brands"
+    
     pages_with_recipes = get_pages_with_recipes()
     recipe_pages = get_recipes(pages_with_recipes)
-    recipes_file.write("Link;Name;Ingredients;Garnish;Glass;Flavor;BaseSpirit;CocktailType;Preparation;Served;Strength;Difficulty;Hours;Occasions;Theme;Brands")
+    recipes_file.write(table_head)
 
-    for recip_page in recipe_pages:
-        print('working on: ', recip_page)
-        recipe = scrap_recipe(recip_page)
+    for recipe_page in recipe_pages:
+        print('working on: ', recipe_page)
+        recipe = scrap_recipe(recipe_page)
         recipes_file.write(recipe.generate_csv_string())
 
     recipes_file.close()
@@ -144,21 +146,22 @@ def save_recipe_as_csv():
 if __name__ == "__main__":
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
-    compiledRegExs = CompiledRegExs.CompiledRegExs()
+    compiled_reg_exs = CompiledRegExs.CompiledRegExs()
     pagesWithRecipesToLoad = 1  # there is currently 48 pages
 
     # list_of_recipes = scrap_all_recipes()
-    #
     # for recipe in list_of_recipes:
     #     print(recipe)
     # print(len(list_of_recipes))
+    
+    save_all_recipes_as_csv()
 
-    testRecipeLink = 'https://www.liquor.com/recipes/mozart-get-off-my-isle'
-    recipe = scrap_recipe(testRecipeLink)
-    print(recipe.generate_csv_string())
-    print(recipe)
+    # test_recipe_link = 'https://www.liquor.com/recipes/bacardi-pina-colada'
+    # recipe = scrap_recipe(test_recipe_link)
+    # print(recipe.generate_csv_string())
+    # print(recipe)
 else:
     # for test purposes
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
-    compiledRegExs = CompiledRegExs.CompiledRegExs()
+    compiled_reg_exs = CompiledRegExs.CompiledRegExs()

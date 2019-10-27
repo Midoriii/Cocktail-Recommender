@@ -11,7 +11,7 @@ class Recipe:
         self.glass = []
         self.flavor = []
         self.base = []
-        self.cocktailType = []
+        self.cocktail_type = []
         self.served = []
         self.preparation = []
         self.strength = []
@@ -29,7 +29,7 @@ class Recipe:
                 "Glass:        " + ", ".join(self.glass) + "\n" +
                 "Flavor:       " + ", ".join(self.flavor) + "\n" +
                 "BaseSpirit:   " + ", ".join(self.base) + "\n" +
-                "CocktailType: " + ", ".join(self.cocktailType) + "\n" +
+                "CocktailType: " + ", ".join(self.cocktail_type) + "\n" +
                 "Preparation:  " + ", ".join(self.preparation) + "\n" +
                 "Served:       " + ", ".join(self.served) + "\n" +
                 "Strength:     " + ", ".join(self.strength) + "\n" +
@@ -47,7 +47,7 @@ class Recipe:
                 ";".join(self.glass) + "," +
                 ";".join(self.flavor) + "," +
                 ";".join(self.base) + "," +
-                ";".join(self.cocktailType) + "," +
+                ";".join(self.cocktail_type) + "," +
                 ";".join(self.preparation) + "," +
                 ";".join(self.served) + "," +
                 ";".join(self.strength) + "," +
@@ -55,8 +55,7 @@ class Recipe:
                 ";".join(self.hours) + "," +
                 ";".join(self.occasions) + "," +
                 ";".join(self.theme) + "," +
-                ";".join(self.brands) + ",")
-        
+                ";".join(self.brands) + "\n")
 
     ''' Removes trailing spaces and occasional '*' from ingredients and garnish'''
     def clean_recipe_attributes(self):
