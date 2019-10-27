@@ -27,8 +27,8 @@ class Recipe:
                 "Ingredients:  " + ", ".join(self.ingredients) + "\n" +
                 "Garnish:      " + ", ".join(self.garnish) + "\n" +
                 "Glass:        " + ", ".join(self.glass) + "\n" +
-                "Flavor:       " + ", ".join(self.flavor) + " \n" +
-                "BaseSpirit:   " + ", ".join(self.base) + " \n" +
+                "Flavor:       " + ", ".join(self.flavor) + "\n" +
+                "BaseSpirit:   " + ", ".join(self.base) + "\n" +
                 "CocktailType: " + ", ".join(self.cocktailType) + "\n" +
                 "Preparation:  " + ", ".join(self.preparation) + "\n" +
                 "Served:       " + ", ".join(self.served) + "\n" +
@@ -45,8 +45,8 @@ class Recipe:
                 ";".join(self.ingredients) + "," +
                 ";".join(self.garnish) + "," +
                 ";".join(self.glass) + "," +
-                ";".join(self.flavor) + " ," +
-                ";".join(self.base) + " ," +
+                ";".join(self.flavor) + "," +
+                ";".join(self.base) + "," +
                 ";".join(self.cocktailType) + "," +
                 ";".join(self.preparation) + "," +
                 ";".join(self.served) + "," +

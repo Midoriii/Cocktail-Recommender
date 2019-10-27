@@ -153,7 +153,7 @@ if __name__ == "__main__":
     #     print(recipe)
     # print(len(list_of_recipes))
 
-    testRecipeLink = 'https://www.liquor.com/recipes/smoke-break'
+    testRecipeLink = 'https://www.liquor.com/recipes/mozart-get-off-my-isle'
     recipe = scrap_recipe(testRecipeLink)
     print(recipe.generate_csv_string())
     print(recipe)
