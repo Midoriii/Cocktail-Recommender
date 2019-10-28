@@ -110,15 +110,15 @@ class TestScrapProfile(TestCase):
         self.assertTrue(recipe.theme[0] == 'Fall')
         self.assertTrue(recipe.brands[0] == 'Glenfiddich')
 
-    def getOffMyIsle(self):
+    def testGetOffMyIsle(self):
         recipe = Recipe.Recipe()
         scraper.scrap_profile(get_off_my_isle, recipe)
-        self.assertTrue(recipe.garnish[0] == 'Dark chocolate shaving')
+        self.assertTrue(recipe.garnish[0] == 'Dark chocolate shavings')
         self.assertTrue(recipe.flavor[0] == 'Sweet')
         self.assertTrue(recipe.base[0] == 'Scotch')
         self.assertTrue(recipe.cocktail_type[0] == 'Modern Classics')
         self.assertTrue(recipe.served[0] == 'On the Rocks')
-        self.assertTrue(recipe.preparation == 'Shaken')
+        self.assertTrue(recipe.preparation[0] == 'Shaken')
         self.assertTrue(recipe.strength[0] == 'Medium')
         self.assertTrue(recipe.difficulty[0] == 'Complicated')
         self.assertTrue(recipe.hours[0] == 'Evening')
@@ -173,9 +173,10 @@ class TestScrapIngredients(TestCase):
         self.assertTrue(recipe.ingredients[4] == 'Champagne')
         self.assertTrue(recipe.ingredients[5] == 'Thistle')
 
-    def getOffMyIsle(self):
+    def testGetOffMyIsle(self):
         recipe = Recipe.Recipe()
         scraper.scrap_ingredients(get_off_my_isle, recipe)
+        recipe.clean_recipe_attributes()
         self.assertTrue(recipe.ingredients[0] == 'Peanut butter-washed scotch')
         self.assertTrue(recipe.ingredients[1] == 'Mozart chocolate cream liqueur')
         self.assertTrue(recipe.ingredients[2] == 'Cookie dough liqueur')
@@ -209,35 +210,35 @@ class TestScrapGlass(TestCase):
         scraper.scrap_glass(royal_balmoral_punch, recipe)
         self.assertTrue(recipe.glass[0] == 'Teacup')
 
-    def getOffMyIsle(self):
+    def testGetOffMyIsle(self):
         recipe = Recipe.Recipe()
         scraper.scrap_glass(get_off_my_isle, recipe)
         self.assertTrue(recipe.glass[0] == 'Highball')
         self.assertTrue(recipe.glass[1] == 'Collins')
 
-    def bacardi_lime_cranberry(self):
+    def testBacardi_lime_cranberry(self):
         recipe = Recipe.Recipe()
-        scraper.scrap_glass(get_off_my_isle, recipe)
+        scraper.scrap_glass(bacardi_lime_cranberry, recipe)
         self.assertTrue(len(recipe.glass) == 0)
 
 
 class TestStarCharNotPresent(TestCase):
-    def kiwiBird(self):
+    def testKiwiBird(self):
         recipe = Recipe.Recipe()
         scraper.scrap_ingredients(kiwi_bird, recipe)
         recipe.clean_recipe_attributes()
         self.assertTrue(recipe.ingredients[2] == 'Coconut cream')
         self.assertTrue(recipe.ingredients[3] == 'Kiwi syrup')
 
-    def bourbonToscano(self):
+    def testBourbonToscano(self):
         recipe = Recipe.Recipe()
         scraper.scrap_ingredients(bourbon_toscano, recipe)
         recipe.clean_recipe_attributes()
         self.assertTrue(recipe.ingredients[3] == 'Smoked ice cubes')
 
-    def haileysComet(self):
+    def testHaileysComet(self):
         recipe = Recipe.Recipe()
-        scraper.scrap_ingredients(haileys_comet, recipe)
+        scraper.scrap_profile(haileys_comet, recipe)
         recipe.clean_recipe_attributes()
         self.assertTrue(recipe.garnish[0] == 'Orgeat-chantilly cream')
 
@@ -247,12 +248,12 @@ class TestScrappingEndsAfterBrands(TestCase):
         scraper.scrap_profile(bacardi_pina_colada, recipe)
         self.assertTrue(len(recipe.cocktail_type) == 2)
 
-    def kiwiBird(self):
+    def testKiwiBird(self):
         recipe = Recipe.Recipe()
         scraper.scrap_profile(kiwi_bird, recipe)
         self.assertTrue(len(recipe.cocktail_type) == 1)
 
-    def haileysComet(self):
+    def testHaileysComet(self):
         recipe = Recipe.Recipe()
         scraper.scrap_profile(haileys_comet, recipe)
         self.assertTrue(len(recipe.cocktail_type) == 1)
@@ -284,7 +285,7 @@ class Test_Scrap_Title(TestCase):
         scraper.scrap_title(royal_balmoral_punch, recipe)
         self.assertTrue(recipe.name == 'Royal Balmoral Punch')
 
-    def getOffMyIsle(self):
+    def testGetOffMyIsle(self):
         recipe = Recipe.Recipe()
         scraper.scrap_title(get_off_my_isle, recipe)
         self.assertTrue(recipe.name == 'Get Off My Isle')
@@ -311,6 +312,6 @@ class Test_CSV_String(TestCase):
         recipe = scraper.scrap_recipe('https://www.liquor.com/recipes/royal-balmoral-punch')
         self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/royal-balmoral-punch,Royal Balmoral Punch,Glenfiddich 21-year-old single-malt scotch;Tea syrup;Granny Smith apple juice;Lemonade;Champagne;Thistle,Lemon wheel,Teacup,Sour;Sweet,Scotch,Punches,,On the Rocks,Medium,Medium,Evening,,Fall,Glenfiddich\n')
 
-    def getOffMyIsle(self):
+    def testGetOffMyIsle(self):
         recipe = scraper.scrap_recipe('https://www.liquor.com/recipes/mozart-get-off-my-isle')
         self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/mozart-get-off-my-isle,Get Off My Isle,Peanut butter-washed scotch;Mozart chocolate cream liqueur;Cookie dough liqueur;Ponche de Crema;Angostura bitters,Dark chocolate shavings,Highball;Collins,Sweet,Scotch,Modern Classics,Shaken,On the Rocks,Medium,Complicated,Evening,,Romantic,Mozart\n')

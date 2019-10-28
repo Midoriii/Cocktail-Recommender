@@ -3,6 +3,7 @@ import requests
 
 import CompiledRegExs
 import Recipe
+import RecipeStatistics
 
 
 def get_pages_with_recipes():
@@ -144,11 +145,26 @@ def save_all_recipes_as_csv():
     recipes_file.close()
 
 
+def get_statistical_data():
+    recipeStatistics = RecipeStatistics.RecipeStatistics()
+    # pages_with_recipes = get_pages_with_recipes()
+    # recipe_pages = get_recipes(pages_with_recipes)
+    recipe_pages = []
+    recipe_pages.append('https://www.liquor.com/recipes/mozart-get-off-my-isle')
+    for recipe_page in recipe_pages:
+        print('working on: ', recipe_page)
+        recipe = scrap_recipe(recipe_page)
+        print(recipe)
+        recipeStatistics.max_number_of_items(recipe)
+
+    print(recipeStatistics.result_max_number_of_items())
+
+
 if __name__ == "__main__":
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
     compiled_reg_exs = CompiledRegExs.CompiledRegExs()
-    pagesWithRecipesToLoad = 1  # there is currently 48 pages
+    pagesWithRecipesToLoad = 48  # there is currently 48 pages
 
     # list_of_recipes = scrap_all_recipes()
     # for recipe in list_of_recipes:
@@ -157,7 +173,9 @@ if __name__ == "__main__":
     
     # save_all_recipes_as_csv()
 
-    test_recipe_link = 'https://www.liquor.com/recipes/bacardi-pina-colada'
+    # get_statistical_data()
+
+    test_recipe_link = 'https://www.liquor.com/recipes/haileys-comet'
     recipe = scrap_recipe(test_recipe_link)
     print(recipe.generate_csv_string())
     print(recipe.generate_json_string())
