@@ -15,6 +15,7 @@ def get_pages_with_recipes():
 def get_recipes(pages_with_recipes):
     recipe_pages = []
     for recipePage in pages_with_recipes:
+        print("getting recipe: ", recipePage)
         page = parse_page_from_link(recipePage)
 
         for link in page.find_all('a'):
@@ -154,12 +155,13 @@ if __name__ == "__main__":
     #     print(recipe)
     # print(len(list_of_recipes))
     
-    save_all_recipes_as_csv()
+    # save_all_recipes_as_csv()
 
-    # test_recipe_link = 'https://www.liquor.com/recipes/bacardi-pina-colada'
-    # recipe = scrap_recipe(test_recipe_link)
-    # print(recipe.generate_csv_string())
-    # print(recipe)
+    test_recipe_link = 'https://www.liquor.com/recipes/bacardi-pina-colada'
+    recipe = scrap_recipe(test_recipe_link)
+    print(recipe.generate_csv_string())
+    print(recipe.generate_json_string())
+    print(recipe)
 else:
     # for test purposes
     headers = requests.utils.default_headers()

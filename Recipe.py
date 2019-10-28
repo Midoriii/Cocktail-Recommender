@@ -1,6 +1,6 @@
+import json
+
 """Class which holds all information about recipe"""
-
-
 class Recipe:
     def __init__(self):
         # lists because some fields can have multiple values
@@ -56,6 +56,27 @@ class Recipe:
                 ";".join(self.occasions) + "," +
                 ";".join(self.theme) + "," +
                 ";".join(self.brands) + "\n")
+
+    def generate_json_string(self):
+        return ('{\n\t"name": "' + self.name + '",\n' +
+                '\t"link": "' + self.link + '",\n' +
+                '\t"ingredients": [\n\t\t"' + '",\n\t\t"'.join(self.ingredients) + '"\n\t],\n' +
+                '\t"garnish": ["' + '", "'.join(self.garnish) + '"],\n' +
+                '\t"glass": ["' + '", "'.join(self.glass) + '"],\n' +
+                '\t"profile": {\n' +
+                '\t\t"flavor": ["' + '", "'.join(self.flavor) + '"],\n' +
+                '\t\t"base_spirit": ["' + '", "'.join(self.base) + '"],\n' +
+                '\t\t"cocktail_type": ["' + '", "'.join(self.cocktail_type) + '"],\n' +
+                '\t\t"preparation": ["' + '", "'.join(self.preparation) + '"],\n' +
+                '\t\t"served": ["' + '", "'.join(self.served) + '"],\n' +
+                '\t\t"strength": ["' + '", "'.join(self.strength) + '"],\n' +
+                '\t\t"difficulty": ["' + '", "'.join(self.difficulty) + '"],\n' +
+                '\t\t"hours": ["' + '", "'.join(self.hours) + '"],\n' +
+                '\t\t"occasions": ["' + '", "'.join(self.occasions) + '"],\n' +
+                '\t\t"theme": ["' + '", "'.join(self.theme) + '"],\n' +
+                '\t\t"brands": ["' + '", "'.join(self.brands) + '"],\n' +
+                '\t}\n}'
+                )
 
     ''' Removes trailing spaces and occasional '*' from ingredients and garnish'''
     def clean_recipe_attributes(self):
