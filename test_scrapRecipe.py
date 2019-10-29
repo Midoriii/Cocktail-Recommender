@@ -291,27 +291,28 @@ class Test_Scrap_Title(TestCase):
         self.assertTrue(recipe.name == 'Get Off My Isle')
 
 
-class Test_CSV_String(TestCase):
+class Test_Image(TestCase):
     def testBacardiPinaColada(self):
-        recipe = scraper.scrap_recipe('https://www.liquor.com/recipes/bacardi-pina-colada')
-        self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/bacardi-pina-colada,Bacardi Piña Colada,Bacardí Superior rum;Fresh coconut water;Fresh pineapple juice;Fresh pineapple;Caster sugar,Pineapple slice;Pineapple leaf,Hurricane,Fruity/Citrus-forward,Rum,Classics;Tiki / Tropical,Shaken,Neat/Up,Medium,Medium,Afternoon,,Summer,Bacardi\n')
+        recipe = Recipe.Recipe()
+        scraper.scrap_image(bacardi_pina_colada, recipe)
+        self.assertTrue(recipe.image == "https://cdn.liquor.com/wp-content/uploads/2019/07/16134450/Bacardi-Pina-Colada-feature.jpg")
 
     def testSmokeBreak(self):
-        recipe = scraper.scrap_recipe('https://www.liquor.com/recipes/smoke-break')
-        self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/smoke-break,Smoke Break,Cherrywood chips;W.L. Weller Special Reserve bourbon;Cream sherry;Carpano Antica Formula vermouth;Woodford Reserve spiced cherry bourbon-barrel-aged bitters;Angostura bitters,Dark chocolate;Dried black cherries,Rocks,Smoky;Spirit-forward,Bourbon / American Whiskey;Whiskey,Modern Classics,Stirred,Large Ice Cube,Strong,Medium,Evening,,,Angostura;carpano;W.L. Weller;Woodford\n')
+        recipe = Recipe.Recipe()
+        scraper.scrap_image(smoke_break, recipe)
+        self.assertTrue(recipe.image == "https://cdn.liquor.com/wp-content/uploads/2019/09/27153343/smoke-break-720x720-recipe.jpg")
 
     def testVeranoEnValencia(self):
-        recipe = scraper.scrap_recipe('https://www.liquor.com/recipes/azunia-verano-en-valencia')
-        self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/azunia-verano-en-valencia,Verano en Valencia,Azuñia reposado organic tequila;Taylor Fladgate dry white port;Giffard apricot liqueur;Fresh lemon juice;Fever-Tree Mediterranean tonic water,Thyme sprigs;Dehydrated lemon wheel,Wine,Fruity/Citrus-forward;Sweet,Tequila,Modern Classics,Built in Glass,On the Rocks,Medium,Simple,Afternoon;Evening,,Summer,Azunia;Giffard;Taylor Fladgate\n')
+        recipe = Recipe.Recipe()
+        scraper.scrap_image(verano_en_valencia, recipe)
+        self.assertTrue(recipe.image == "https://cdn.liquor.com/wp-content/uploads/2019/06/24155000/azunia_Verano-en-Valencia_720x720-1-260x260.jpg")
 
     def testHydrate(self):
-        recipe = scraper.scrap_recipe('https://www.liquor.com/recipes/hydrate')
-        self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/hydrate,Hydrate,Organic cucumber vodka;Puréed watermelon;Fresh lime juice;Truvia,Cucumber slice;Mint sprig,Martini,Fruity/Citrus-forward,Vodka,Modern Classics,Shaken,Neat/Up,Medium,Medium,Afternoon;Morning/Brunch,,Summer,\n')
+        recipe = Recipe.Recipe()
+        scraper.scrap_image(hydrate, recipe)
+        self.assertTrue(recipe.image == "https://cdn.liquor.com/wp-content/uploads/2009/11/15091608/hydrate-720-720-article-260x260.jpg")
 
     def testRoyalBalmoralPunch(self):
-        recipe = scraper.scrap_recipe('https://www.liquor.com/recipes/royal-balmoral-punch')
-        self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/royal-balmoral-punch,Royal Balmoral Punch,Glenfiddich 21-year-old single-malt scotch;Tea syrup;Granny Smith apple juice;Lemonade;Champagne;Thistle,Lemon wheel,Teacup,Sour;Sweet,Scotch,Punches,,On the Rocks,Medium,Medium,Evening,,Fall,Glenfiddich\n')
-
-    def testGetOffMyIsle(self):
-        recipe = scraper.scrap_recipe('https://www.liquor.com/recipes/mozart-get-off-my-isle')
-        self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/mozart-get-off-my-isle,Get Off My Isle,Peanut butter-washed scotch;Mozart chocolate cream liqueur;Cookie dough liqueur;Ponche de Crema;Angostura bitters,Dark chocolate shavings,Highball;Collins,Sweet,Scotch,Modern Classics,Shaken,On the Rocks,Medium,Complicated,Evening,Valentine’s Day,Romantic,Mozart\n')
+        recipe = Recipe.Recipe()
+        scraper.scrap_image(royal_balmoral_punch, recipe)
+        self.assertTrue(recipe.image == "https://cdn.liquor.com/wp-content/uploads/2011/01/royal-balmoral-punch1.jpg")

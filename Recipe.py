@@ -4,6 +4,7 @@ class Recipe:
         # lists because some fields can have multiple values
         self.link = ""
         self.name = ""
+        self.image = ""
         self.ingredients = []
         self.garnish = []
         self.glass = []
@@ -12,7 +13,7 @@ class Recipe:
         self.cocktail_type = []
         self.served = []
         self.preparation = []
-        self.strength = ""
+        self.strength = ""  # strength is only attribute that has only single value in all recipes
         self.difficulty = []
         self.hours = []
         self.occasion = []
@@ -22,6 +23,7 @@ class Recipe:
     def __str__(self):
         return ("Link:         " + self.link + "\n" +
                 "Name:         " + self.name + "\n" +
+                "Image:        " + self.image + "\n" +
                 "Ingredients:  " + ", ".join(self.ingredients) + "\n" +
                 "Garnish:      " + ", ".join(self.garnish) + "\n" +
                 "Glass:        " + ", ".join(self.glass) + "\n" +
@@ -40,6 +42,7 @@ class Recipe:
     def generate_csv_string(self):
         return (self.link + "," +
                 self.name + "," +
+                self.image + "," +
                 ";".join(self.ingredients) + "," +
                 ";".join(self.garnish) + "," +
                 ";".join(self.glass) + "," +
@@ -58,6 +61,7 @@ class Recipe:
     def generate_json_string(self):
         return ('{\n\t"name": "' + self.name + '",\n' +
                 '\t"link": "' + self.link + '",\n' +
+                '\t"image": "' + self.image + '",\n' +
                 '\t"ingredients": [\n\t\t"' + '",\n\t\t"'.join(self.ingredients) + '"\n\t],\n' +
                 '\t"garnish": ["' + '", "'.join(self.garnish) + '"],\n' +
                 '\t"glass": ["' + '", "'.join(self.glass) + '"],\n' +
@@ -67,14 +71,14 @@ class Recipe:
                 '\t\t"cocktail_type": ["' + '", "'.join(self.cocktail_type) + '"],\n' +
                 '\t\t"preparation": ["' + '", "'.join(self.preparation) + '"],\n' +
                 '\t\t"served": ["' + '", "'.join(self.served) + '"],\n' +
-                '\t\t"strength": ["' + '", "'.join(self.strength) + '"],\n' +
+                '\t\t"strength": "' + self.strength + '",\n' +
                 '\t\t"difficulty": ["' + '", "'.join(self.difficulty) + '"],\n' +
                 '\t\t"hours": ["' + '", "'.join(self.hours) + '"],\n' +
                 '\t\t"occasion": ["' + '", "'.join(self.occasion) + '"],\n' +
                 '\t\t"theme": ["' + '", "'.join(self.theme) + '"],\n' +
                 '\t\t"brands": ["' + '", "'.join(self.brands) + '"],\n' +
                 '\t}\n}'
-                )
+                ).replace('[""]', '[]')
 
     ''' Removes trailing spaces and occasional '*' from ingredients and garnish'''
     def clean_recipe_attributes(self):

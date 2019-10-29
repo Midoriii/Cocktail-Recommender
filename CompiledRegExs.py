@@ -6,6 +6,7 @@ class CompiledRegExs:
         self.glass_reg_ex = re.compile(r'/?post_type=recipe&amp;s=(.*)">(.*)</a></div>')
         self.ingredient_without_link_reg_ex = re.compile(r'(.*)</div>')
         self.ingredient_containing_link_reg_ex = re.compile(r'style="text-decoration: underline;">(.*)</a> </div>')
+        self.image = re.compile(r'<meta content=(.*)name="sailthru.image.thumb"/>')
 
         self.garnish = re.compile(r'/?post_type=recipe&amp;s=(.*)"><span class="oz-value">(.*)</span><span class="ml-value"')
         self.flavor = re.compile(r'/flavor-profile/(.*)/?post_type=recipe">(.*)</a>')

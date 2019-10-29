@@ -42,6 +42,7 @@ def scrap_recipe(recipe_link):
     scrap_ingredients(page, recipe)
     scrap_profile(page, recipe)
     scrap_glass(page, recipe)
+    scrap_image(page, recipe)
     recipe.clean_recipe_attributes()
     return recipe
 
@@ -87,11 +88,13 @@ def scrap_glass(page, recipe):
         text = text.split(' or ')  # glass can have more than one item separated by string ' or ' e.g. 'glass1 or glass2'
         recipe.glass.extend(text)
 
-def crap_image(page, recipe):
-    for link in page.find_all('name'):
-        link = str(link)
-        print(link)
 
+def scrap_image(page, recipe):
+    for link in page.find_all('meta'):
+        link = str(link)
+        if compiled_reg_exs.image.search(link) is not None:
+            recipe.image = compiled_reg_exs.image.search(link).group(1)[1:-2]  # TODO find better way how to remove "
+            break
 
 
 def fill_recipe_profile_values(recipe_attribute, text, recipe):
@@ -182,9 +185,8 @@ if __name__ == "__main__":
 
     # get_statistical_data()
 
-    test_recipe_link = 'https://www.liquor.com/recipes/mozart-get-off-my-isle'
+    test_recipe_link = 'https://www.liquor.com/recipes/royal-balmoral-punch'
     recipe = scrap_recipe(test_recipe_link)
-    print(recipe.generate_csv_string())
     print(recipe.generate_json_string())
     print(recipe)
 else:
