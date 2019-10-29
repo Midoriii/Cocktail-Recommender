@@ -1,5 +1,3 @@
-import json
-
 """Class which holds all information about recipe"""
 class Recipe:
     def __init__(self):
@@ -17,7 +15,7 @@ class Recipe:
         self.strength = []
         self.difficulty = []
         self.hours = []
-        self.occasions = []
+        self.occasion = []
         self.theme = []
         self.brands = []
 
@@ -35,7 +33,7 @@ class Recipe:
                 "Strength:     " + ", ".join(self.strength) + "\n" +
                 "Difficulty:   " + ", ".join(self.difficulty) + "\n" +
                 "Hours:        " + ", ".join(self.hours) + "\n" +
-                "Occasions:    " + ", ".join(self.occasions) + "\n" +
+                "Occasion:     " + ", ".join(self.occasion) + "\n" +
                 "Theme:        " + ", ".join(self.theme) + "\n" +
                 "Brands:       " + ", ".join(self.brands) + "\n")
     
@@ -53,7 +51,7 @@ class Recipe:
                 ";".join(self.strength) + "," +
                 ";".join(self.difficulty) + "," +
                 ";".join(self.hours) + "," +
-                ";".join(self.occasions) + "," +
+                ";".join(self.occasion) + "," +
                 ";".join(self.theme) + "," +
                 ";".join(self.brands) + "\n")
 
@@ -72,7 +70,7 @@ class Recipe:
                 '\t\t"strength": ["' + '", "'.join(self.strength) + '"],\n' +
                 '\t\t"difficulty": ["' + '", "'.join(self.difficulty) + '"],\n' +
                 '\t\t"hours": ["' + '", "'.join(self.hours) + '"],\n' +
-                '\t\t"occasions": ["' + '", "'.join(self.occasions) + '"],\n' +
+                '\t\t"occasion": ["' + '", "'.join(self.occasion) + '"],\n' +
                 '\t\t"theme": ["' + '", "'.join(self.theme) + '"],\n' +
                 '\t\t"brands": ["' + '", "'.join(self.brands) + '"],\n' +
                 '\t}\n}'

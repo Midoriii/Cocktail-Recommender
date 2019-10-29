@@ -108,8 +108,8 @@ def fill_recipe_profile_values(recipe_attribute, text, recipe):
         recipe.difficulty.append(text)
     if recipe_attribute == 'hours':
         recipe.hours.append(text)
-    if recipe_attribute == 'occasions':
-        recipe.hours.append(text)
+    if recipe_attribute == 'occasion':
+        recipe.occasion.append(text)
     if recipe_attribute == 'theme':
         recipe.theme.append(text)
     if recipe_attribute == 'brands':
@@ -175,7 +175,7 @@ if __name__ == "__main__":
 
     # get_statistical_data()
 
-    test_recipe_link = 'https://www.liquor.com/recipes/haileys-comet'
+    test_recipe_link = 'https://www.liquor.com/recipes/mozart-get-off-my-isle'
     recipe = scrap_recipe(test_recipe_link)
     print(recipe.generate_csv_string())
     print(recipe.generate_json_string())

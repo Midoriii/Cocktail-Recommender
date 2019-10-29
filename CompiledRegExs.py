@@ -16,7 +16,7 @@ class CompiledRegExs:
         self.strength = re.compile(r'/strength/(.*)/?post_type=recipe">(.*)</a>')
         self.difficulty = re.compile(r'/complexity/(.*)/?post_type=recipe">(.*)</a>')
         self.hours = re.compile(r'/hours/(.*)/?post_type=recipe">(.*)</a>')
-        self.occasions = re.compile(r'/occasions/(.*)/?post_type=recipe">(.*)</a>')
+        self.occasion = re.compile(r'/occasion/(.*)/?post_type=recipe">(.*)</a>')
         self.theme = re.compile(r'/theme/(.*)/?post_type=recipe">(.*)</a>')
         self.brands = re.compile(r'/?post_type=brand&amp;s=(.*)">(.*)</a>')
         
@@ -30,7 +30,7 @@ class CompiledRegExs:
             'strength': self.strength,
             'difficulty': self.difficulty,
             'hours': self.hours,
-            'occasions': self.occasions,
+            'occasion': self.occasion,
             'theme': self.theme,
             'brands': self.brands,
         }

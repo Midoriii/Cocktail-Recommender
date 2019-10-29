@@ -7,7 +7,7 @@ smoke_break = scraper.parse_page_from_link('https://www.liquor.com/recipes/smoke
 verano_en_valencia = scraper.parse_page_from_link('https://www.liquor.com/recipes/azunia-verano-en-valencia')
 hydrate = scraper.parse_page_from_link('https://www.liquor.com/recipes/hydrate')
 royal_balmoral_punch = scraper.parse_page_from_link('https://www.liquor.com/recipes/royal-balmoral-punch')
-get_off_my_isle = scraper.parse_page_from_link('https://www.liquor.com/recipes/mozart-get-off-my-isle')  # recipe with two glasses, and have occasions in profile
+get_off_my_isle = scraper.parse_page_from_link('https://www.liquor.com/recipes/mozart-get-off-my-isle')  # recipe with two glasses, and have occasion in profile
 kiwi_bird = scraper.parse_page_from_link('https://www.liquor.com/recipes/kiwi-bird')  # trailing **
 bourbon_toscano = scraper.parse_page_from_link('https://www.liquor.com/recipes/bourbon-toscano')  # * is the first character
 haileys_comet = scraper.parse_page_from_link('https://www.liquor.com/recipes/haileys-comet')  # garnish with *
@@ -28,7 +28,7 @@ class TestScrapProfile(TestCase):
         self.assertTrue(recipe.strength[0] == 'Medium')
         self.assertTrue(recipe.difficulty[0] == 'Medium')
         self.assertTrue(recipe.hours[0] == 'Afternoon')
-        self.assertTrue(recipe.occasions == [])
+        self.assertTrue(recipe.occasion == [])
         self.assertTrue(recipe.theme[0] == 'Summer')
         self.assertTrue(recipe.brands[0] == 'Bacardi')
 
@@ -47,7 +47,7 @@ class TestScrapProfile(TestCase):
         self.assertTrue(recipe.strength[0] == 'Strong')
         self.assertTrue(recipe.difficulty[0] == 'Medium')
         self.assertTrue(recipe.hours[0] == 'Evening')
-        self.assertTrue(recipe.occasions == [])
+        self.assertTrue(recipe.occasion == [])
         self.assertTrue(recipe.theme == [])
         self.assertTrue(recipe.brands[0] == 'Angostura')
         self.assertTrue(recipe.brands[1] == 'carpano')
@@ -69,7 +69,7 @@ class TestScrapProfile(TestCase):
         self.assertTrue(recipe.difficulty[0] == 'Simple')
         self.assertTrue(recipe.hours[0] == 'Afternoon')
         self.assertTrue(recipe.hours[1] == 'Evening')
-        self.assertTrue(recipe.occasions == [])
+        self.assertTrue(recipe.occasion == [])
         self.assertTrue(recipe.theme[0] == 'Summer')
         self.assertTrue(recipe.brands[0] == 'Azunia')
         self.assertTrue(recipe.brands[1] == 'Giffard')
@@ -88,7 +88,7 @@ class TestScrapProfile(TestCase):
         self.assertTrue(recipe.strength[0] == 'Medium')
         self.assertTrue(recipe.difficulty[0] == 'Medium')
         self.assertTrue(recipe.hours[0] == 'Afternoon')
-        self.assertTrue(recipe.occasions == [])
+        self.assertTrue(recipe.occasion == [])
         self.assertTrue(recipe.hours[1] == 'Morning/Brunch')
         self.assertTrue(recipe.theme[0] == 'Summer')
         self.assertTrue(recipe.brands == [])
@@ -106,7 +106,7 @@ class TestScrapProfile(TestCase):
         self.assertTrue(recipe.strength[0] == 'Medium')
         self.assertTrue(recipe.difficulty[0] == 'Medium')
         self.assertTrue(recipe.hours[0] == 'Evening')
-        self.assertTrue(recipe.occasions == [])
+        self.assertTrue(recipe.occasion == [])
         self.assertTrue(recipe.theme[0] == 'Fall')
         self.assertTrue(recipe.brands[0] == 'Glenfiddich')
 
@@ -122,7 +122,7 @@ class TestScrapProfile(TestCase):
         self.assertTrue(recipe.strength[0] == 'Medium')
         self.assertTrue(recipe.difficulty[0] == 'Complicated')
         self.assertTrue(recipe.hours[0] == 'Evening')
-        self.assertTrue(recipe.occasions[0] == 'Valentine’s Day')
+        self.assertTrue(recipe.occasion[0] == 'Valentine’s Day')
         self.assertTrue(recipe.theme[0] == 'Romantic')
         self.assertTrue(recipe.brands[0] == 'Mozart')
 
@@ -314,4 +314,4 @@ class Test_CSV_String(TestCase):
 
     def testGetOffMyIsle(self):
         recipe = scraper.scrap_recipe('https://www.liquor.com/recipes/mozart-get-off-my-isle')
-        self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/mozart-get-off-my-isle,Get Off My Isle,Peanut butter-washed scotch;Mozart chocolate cream liqueur;Cookie dough liqueur;Ponche de Crema;Angostura bitters,Dark chocolate shavings,Highball;Collins,Sweet,Scotch,Modern Classics,Shaken,On the Rocks,Medium,Complicated,Evening,,Romantic,Mozart\n')
+        self.assertTrue(recipe.generate_csv_string() == 'https://www.liquor.com/recipes/mozart-get-off-my-isle,Get Off My Isle,Peanut butter-washed scotch;Mozart chocolate cream liqueur;Cookie dough liqueur;Ponche de Crema;Angostura bitters,Dark chocolate shavings,Highball;Collins,Sweet,Scotch,Modern Classics,Shaken,On the Rocks,Medium,Complicated,Evening,Valentine’s Day,Romantic,Mozart\n')
