@@ -11,7 +11,7 @@ class RecipeStatistics:
         self.strength = 0
         self.difficulty = 0
         self.hours = 0
-        self.occasions = 0
+        self.occasion = 0
         self.theme = 0
         self.brands = 0
         
@@ -27,7 +27,7 @@ class RecipeStatistics:
         self.strength = max(self.strength, len(recipe.strength))
         self.difficulty = max(self.difficulty, len(recipe.difficulty))
         self.hours = max(self.hours, len(recipe.hours))
-        self.occasions = max(self.occasions, len(recipe.occasions))
+        self.occasion = max(self.occasion, len(recipe.occasion))
         self.theme = max(self.theme, len(recipe.theme))
         self.brands = max(self.brands, len(recipe.brands))
         
@@ -43,6 +43,6 @@ class RecipeStatistics:
                 "Strength:     " + str(self.strength) + "\n" +
                 "Difficulty:   " + str(self.difficulty) + "\n" +
                 "Hours:        " + str(self.hours) + "\n" +
-                "Occasions:    " + str(self.occasions) + "\n" +
+                "Occasion:     " + str(self.occasion) + "\n" +
                 "Theme:        " + str(self.theme) + "\n" +
                 "Brands:       " + str(self.brands) + "\n")

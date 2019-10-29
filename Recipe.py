@@ -12,7 +12,7 @@ class Recipe:
         self.cocktail_type = []
         self.served = []
         self.preparation = []
-        self.strength = []
+        self.strength = ""
         self.difficulty = []
         self.hours = []
         self.occasion = []
@@ -30,7 +30,7 @@ class Recipe:
                 "CocktailType: " + ", ".join(self.cocktail_type) + "\n" +
                 "Preparation:  " + ", ".join(self.preparation) + "\n" +
                 "Served:       " + ", ".join(self.served) + "\n" +
-                "Strength:     " + ", ".join(self.strength) + "\n" +
+                "Strength:     " + self.strength + "\n" +
                 "Difficulty:   " + ", ".join(self.difficulty) + "\n" +
                 "Hours:        " + ", ".join(self.hours) + "\n" +
                 "Occasion:     " + ", ".join(self.occasion) + "\n" +
@@ -48,7 +48,7 @@ class Recipe:
                 ";".join(self.cocktail_type) + "," +
                 ";".join(self.preparation) + "," +
                 ";".join(self.served) + "," +
-                ";".join(self.strength) + "," +
+                self.strength + "," +
                 ";".join(self.difficulty) + "," +
                 ";".join(self.hours) + "," +
                 ";".join(self.occasion) + "," +

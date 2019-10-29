@@ -87,6 +87,12 @@ def scrap_glass(page, recipe):
         text = text.split(' or ')  # glass can have more than one item separated by string ' or ' e.g. 'glass1 or glass2'
         recipe.glass.extend(text)
 
+def crap_image(page, recipe):
+    for link in page.find_all('name'):
+        link = str(link)
+        print(link)
+
+
 
 def fill_recipe_profile_values(recipe_attribute, text, recipe):
     if recipe_attribute == 'garnish':
@@ -103,7 +109,7 @@ def fill_recipe_profile_values(recipe_attribute, text, recipe):
     if recipe_attribute == 'preparation':
         recipe.preparation.append(text)
     if recipe_attribute == 'strength':
-        recipe.strength.append(text)
+        recipe.strength = text
     if recipe_attribute == 'difficulty':
         recipe.difficulty.append(text)
     if recipe_attribute == 'hours':
@@ -147,14 +153,15 @@ def save_all_recipes_as_csv():
 
 def get_statistical_data():
     recipeStatistics = RecipeStatistics.RecipeStatistics()
-    # pages_with_recipes = get_pages_with_recipes()
-    # recipe_pages = get_recipes(pages_with_recipes)
-    recipe_pages = []
-    recipe_pages.append('https://www.liquor.com/recipes/mozart-get-off-my-isle')
+    pages_with_recipes = get_pages_with_recipes()
+    recipe_pages = get_recipes(pages_with_recipes)
+    total = len(recipe_pages)
+    count = 0
+
     for recipe_page in recipe_pages:
-        print('working on: ', recipe_page)
+        count += 1
+        print('working on: ', recipe_page, ' ', count, ' from ', total)
         recipe = scrap_recipe(recipe_page)
-        print(recipe)
         recipeStatistics.max_number_of_items(recipe)
 
     print(recipeStatistics.result_max_number_of_items())
