@@ -5,6 +5,7 @@ class Recipe:
         self.link = ""
         self.name = ""
         self.image = ""
+        self.about = ""
         self.ingredients = []
         self.garnish = []
         self.glass = []
@@ -24,6 +25,7 @@ class Recipe:
         return ("Link:         " + self.link + "\n" +
                 "Name:         " + self.name + "\n" +
                 "Image:        " + self.image + "\n" +
+                "About:        " + self.about + "\n" +
                 "Ingredients:  " + ", ".join(self.ingredients) + "\n" +
                 "Garnish:      " + ", ".join(self.garnish) + "\n" +
                 "Glass:        " + ", ".join(self.glass) + "\n" +
@@ -43,6 +45,7 @@ class Recipe:
         return (self.link + "," +
                 self.name + "," +
                 self.image + "," +
+                self.about + "," +
                 ";".join(self.ingredients) + "," +
                 ";".join(self.garnish) + "," +
                 ";".join(self.glass) + "," +
@@ -62,6 +65,7 @@ class Recipe:
         return ('{\n\t"name": "' + self.name + '",\n' +
                 '\t"link": "' + self.link + '",\n' +
                 '\t"image": "' + self.image + '",\n' +
+                '\t"about": "' + self.about + '",\n' +
                 '\t"ingredients": [\n\t\t"' + '",\n\t\t"'.join(self.ingredients) + '"\n\t],\n' +
                 '\t"garnish": ["' + '", "'.join(self.garnish) + '"],\n' +
                 '\t"glass": ["' + '", "'.join(self.glass) + '"],\n' +

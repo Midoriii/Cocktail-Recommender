@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import re
 
 import CompiledRegExs
 import Recipe
@@ -43,6 +44,7 @@ def scrap_recipe(recipe_link):
     scrap_profile(page, recipe)
     scrap_glass(page, recipe)
     scrap_image(page, recipe)
+    scrap_about(page, recipe)
     recipe.clean_recipe_attributes()
     return recipe
 
@@ -93,8 +95,17 @@ def scrap_image(page, recipe):
     for link in page.find_all('meta'):
         link = str(link)
         if compiled_reg_exs.image.search(link) is not None:
-            recipe.image = compiled_reg_exs.image.search(link).group(1)[1:-2]  # TODO find better way how to remove "
+            recipe.image = compiled_reg_exs.image.search(link).group(1)
             break
+
+
+def scrap_about(page, recipe):
+    for link in page.find_all('span'):
+        link = str(link).replace('\n', '')
+        if compiled_reg_exs.about.search(link) is not None:
+            string_with_links = compiled_reg_exs.about.search(link).group(1)
+            string_without_links = re.sub(compiled_reg_exs.link_remover, '', string_with_links)
+            recipe.about = string_without_links.replace('&amp;', '&')
 
 
 def fill_recipe_profile_values(recipe_attribute, text, recipe):

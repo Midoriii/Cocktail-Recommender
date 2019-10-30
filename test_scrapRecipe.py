@@ -291,7 +291,7 @@ class Test_Scrap_Title(TestCase):
         self.assertTrue(recipe.name == 'Get Off My Isle')
 
 
-class Test_Image(TestCase):
+class Test_image(TestCase):
     def testBacardiPinaColada(self):
         recipe = Recipe.Recipe()
         scraper.scrap_image(bacardi_pina_colada, recipe)
@@ -316,3 +316,30 @@ class Test_Image(TestCase):
         recipe = Recipe.Recipe()
         scraper.scrap_image(royal_balmoral_punch, recipe)
         self.assertTrue(recipe.image == "https://cdn.liquor.com/wp-content/uploads/2011/01/royal-balmoral-punch1.jpg")
+
+
+class Test_about(TestCase):
+    def testBacardiPinaColada(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_about(bacardi_pina_colada, recipe)
+        self.assertTrue(recipe.about == 'The original Cuban Piña Colada is a mellow cocktail that is best made with fresh coconut water and pineapple, to remain true to its heritage, which goes all the way back to 1922.')
+
+    def testSmokeBreak(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_about(smoke_break, recipe)
+        self.assertTrue(recipe.about == 'Jake Larowe, the bar manager at Birds & Bees in Los Angeles, says he wanted to do a decadent cocktail in a playful way. This Manhattan riff is added to a decanter that’s smoked with cherrywood. It reminds him of waiting tables in college and taking that quick cigarette break outside after the rush is over. “We wanted to create the cocktail that you look forward to after a long day at work,” he says.This recipe originally appeared as part of “4 Smart Ways to Smoke Your Bourbon Cocktails.”')
+
+    def testVeranoEnValencia(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_about(verano_en_valencia, recipe)
+        self.assertTrue(recipe.about == 'Technically, you only need to mix a spirit with tonic water or club soda to make a highball. But why stop there? Go above and beyond by utilizing premium tequila and bringing in refreshing ingredients like apricot liqueur, port wine and lemon juice. This recipe originally appeared as part of “10 Classic Cocktails Ready for a Refreshing Summer Makeover.”')
+
+    def testHydrate(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_about(hydrate, recipe)
+        self.assertTrue(recipe.about == 'You heard the cocktail: Drink up.')
+
+    def testRoyalBalmoralPunch(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_about(royal_balmoral_punch, recipe)
+        self.assertTrue(recipe.about == 'Named for the Royal Family’s Scottish summer home, this drink combines fine single malt and good English tea.')
