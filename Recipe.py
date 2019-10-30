@@ -6,6 +6,7 @@ class Recipe:
         self.name = ""
         self.image = ""
         self.about = ""
+        self.how_to_make = ""
         self.ingredients = []
         self.garnish = []
         self.glass = []
@@ -26,6 +27,7 @@ class Recipe:
                 "Name:         " + self.name + "\n" +
                 "Image:        " + self.image + "\n" +
                 "About:        " + self.about + "\n" +
+                "HowToMake:    " + self.how_to_make + "\n" +
                 "Ingredients:  " + ", ".join(self.ingredients) + "\n" +
                 "Garnish:      " + ", ".join(self.garnish) + "\n" +
                 "Glass:        " + ", ".join(self.glass) + "\n" +
@@ -46,6 +48,7 @@ class Recipe:
                 self.name + "," +
                 self.image + "," +
                 self.about + "," +
+                self.how_to_make + "," +
                 ";".join(self.ingredients) + "," +
                 ";".join(self.garnish) + "," +
                 ";".join(self.glass) + "," +
@@ -66,6 +69,7 @@ class Recipe:
                 '\t"link": "' + self.link + '",\n' +
                 '\t"image": "' + self.image + '",\n' +
                 '\t"about": "' + self.about + '",\n' +
+                '\t"how_to_make": "' + self.how_to_make + '",\n' +
                 '\t"ingredients": [\n\t\t"' + '",\n\t\t"'.join(self.ingredients) + '"\n\t],\n' +
                 '\t"garnish": ["' + '", "'.join(self.garnish) + '"],\n' +
                 '\t"glass": ["' + '", "'.join(self.glass) + '"],\n' +

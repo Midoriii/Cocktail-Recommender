@@ -343,3 +343,29 @@ class Test_about(TestCase):
         recipe = Recipe.Recipe()
         scraper.scrap_about(royal_balmoral_punch, recipe)
         self.assertTrue(recipe.about == 'Named for the Royal Family’s Scottish summer home, this drink combines fine single malt and good English tea.')
+
+class Test_how_to_make(TestCase):
+    def testBacardiPinaColada(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_how_to_make(bacardi_pina_colada, recipe)
+        self.assertTrue(recipe.how_to_make == 'Place the pineapple chunks into a cocktail shaker and muddle lightly. Add the pineapple juice, coconut water and sugar, and stir to dissolve the sugar. Add the rum and cubed ice, and shake until it’s frosted. Strain into a Hurricane glass over crushed ice. Garnish with a pineapple slice and pineapple leaf.')
+
+    def testSmokeBreak(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_how_to_make(smoke_break, recipe)
+        self.assertTrue(recipe.how_to_make == 'Using a smoking gun and the cherrywood chips, add smoke to a glass decanter, then cover top of decanter to capture smoke. Add remaining ingredients and ice into a mixing glass and stir until well-chilled. Strain into prepared decanter, cap and serve in a rocks glass over a large ice cube. Garnish with a tray of dark chocolate and dried black cherries.')
+
+    def testVeranoEnValencia(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_how_to_make(verano_en_valencia, recipe)
+        self.assertTrue(recipe.how_to_make == 'Combine all ingredients except the tonic water in a wine glass over fresh ice. Top with the tonic water. Garnish with fresh thyme sprigs and a dehydrated lemon wheel.')
+
+    def testHydrate(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_how_to_make(hydrate, recipe)
+        self.assertTrue(recipe.how_to_make == 'Add all ingredients into a shaker with ice and shake. Strain into a Martini glass. Garnish with a cucumber slice and mint sprig.')
+
+    def testRoyalBalmoralPunch(self):
+        recipe = Recipe.Recipe()
+        scraper.scrap_how_to_make(royal_balmoral_punch, recipe)
+        self.assertTrue(recipe.how_to_make == 'Add the Scotch, syrup and apple juice to a teacup and add a large ice cube. Top with equal amounts of lemonade and Champagne. Garnish with a lemon wheel and thistle. (This recipe can multiplied to serve a crowd: Mix in a punch bowl with a large block of ice.).')

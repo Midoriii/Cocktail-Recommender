@@ -45,6 +45,7 @@ def scrap_recipe(recipe_link):
     scrap_glass(page, recipe)
     scrap_image(page, recipe)
     scrap_about(page, recipe)
+    scrap_how_to_make(page, recipe)
     recipe.clean_recipe_attributes()
     return recipe
 
@@ -106,6 +107,13 @@ def scrap_about(page, recipe):
             string_with_links = compiled_reg_exs.about.search(link).group(1)
             string_without_links = re.sub(compiled_reg_exs.link_remover, '', string_with_links)
             recipe.about = string_without_links.replace('&amp;', '&')
+
+
+def scrap_how_to_make(page, recipe):
+    link = str(page.find_all('div', class_="row x-recipe-prep")[0]).replace('\n', '')
+    print(link)
+    string_with_links = link.replace('</p><p>', ' ')
+    recipe.how_to_make = re.sub(compiled_reg_exs.link_remover, '', string_with_links)
 
 
 def fill_recipe_profile_values(recipe_attribute, text, recipe):
@@ -196,7 +204,7 @@ if __name__ == "__main__":
 
     # get_statistical_data()
 
-    test_recipe_link = 'https://www.liquor.com/recipes/royal-balmoral-punch'
+    test_recipe_link = 'https://www.liquor.com/recipes/hydrate'
     recipe = scrap_recipe(test_recipe_link)
     print(recipe.generate_json_string())
     print(recipe)

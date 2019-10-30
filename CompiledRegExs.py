@@ -8,6 +8,7 @@ class CompiledRegExs:
         self.ingredient_containing_link_reg_ex = re.compile(r'style="text-decoration: underline;">(.*)</a> </div>')
         self.image = re.compile(r'<meta content="(.*)" name="sailthru.image.thumb"/>')
         self.about = re.compile(r'<span itemprop="description"><p>(.*)</p></span>')
+        self.how_to_make = re.compile(r'<div class="row x-recipe-prep" itemprop="recipeInstructions"><p>(.*)</p></div>')
 
         self.garnish = re.compile(r'/?post_type=recipe&amp;s=(.*)"><span class="oz-value">(.*)</span><span class="ml-value"')
         self.flavor = re.compile(r'/flavor-profile/(.*)/?post_type=recipe">(.*)</a>')
