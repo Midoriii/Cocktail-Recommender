@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import re
+import os
 
 import CompiledRegExs
 import Recipe
@@ -111,7 +112,6 @@ def scrap_about(page, recipe):
 
 def scrap_how_to_make(page, recipe):
     link = str(page.find_all('div', class_="row x-recipe-prep")[0]).replace('\n', '')
-    print(link)
     string_with_links = link.replace('</p><p>', ' ')
     recipe.how_to_make = re.sub(compiled_reg_exs.link_remover, '', string_with_links)
 
@@ -173,6 +173,25 @@ def save_all_recipes_as_csv():
     recipes_file.close()
 
 
+def save_all_recipes_as_json():
+    recipes_file = open('recipes.json', 'w')
+
+    pages_with_recipes = get_pages_with_recipes()
+    recipe_pages = get_recipes(pages_with_recipes)
+
+    recipes_file.write('[\n')
+    for recipe_page in recipe_pages:
+        print('working on: ', recipe_page)
+        recipe = scrap_recipe(recipe_page)
+
+        recipes_file.write(recipe.generate_json_string() + '\n')
+
+    recipes_file.seek(recipes_file.tell() - 2, os.SEEK_SET)  # removes comma after last entry which is not allowed
+    recipes_file.write('')
+    recipes_file.write('\n]\n')
+    recipes_file.close()
+
+
 def get_statistical_data():
     recipeStatistics = RecipeStatistics.RecipeStatistics()
     pages_with_recipes = get_pages_with_recipes()
@@ -193,7 +212,7 @@ if __name__ == "__main__":
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
     compiled_reg_exs = CompiledRegExs.CompiledRegExs()
-    pagesWithRecipesToLoad = 48  # there is currently 48 pages
+    pagesWithRecipesToLoad = 1  # there is currently 48 pages
 
     # list_of_recipes = scrap_all_recipes()
     # for recipe in list_of_recipes:
@@ -201,13 +220,14 @@ if __name__ == "__main__":
     # print(len(list_of_recipes))
     
     # save_all_recipes_as_csv()
+    save_all_recipes_as_json()
 
     # get_statistical_data()
 
-    test_recipe_link = 'https://www.liquor.com/recipes/hydrate'
-    recipe = scrap_recipe(test_recipe_link)
-    print(recipe.generate_json_string())
-    print(recipe)
+    # test_recipe_link = 'https://www.liquor.com/recipes/hydrate'
+    # recipe = scrap_recipe(test_recipe_link)
+    # print(recipe.generate_json_string())
+    # print(recipe)
 else:
     # for test purposes
     headers = requests.utils.default_headers()

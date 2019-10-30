@@ -84,8 +84,8 @@ class Recipe:
                 '\t\t"hours": ["' + '", "'.join(self.hours) + '"],\n' +
                 '\t\t"occasion": ["' + '", "'.join(self.occasion) + '"],\n' +
                 '\t\t"theme": ["' + '", "'.join(self.theme) + '"],\n' +
-                '\t\t"brands": ["' + '", "'.join(self.brands) + '"],\n' +
-                '\t}\n}'
+                '\t\t"brands": ["' + '", "'.join(self.brands) + '"]\n' +
+                '\t}\n},'
                 ).replace('[""]', '[]')
 
     ''' Removes trailing spaces and occasional '*' from ingredients and garnish'''
