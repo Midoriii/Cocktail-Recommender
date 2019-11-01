@@ -28,6 +28,8 @@ def get_recipes(pages_with_recipes):
                 if link not in recipe_pages:
                     recipe_pages.append(link)
 
+    #A mistake on their part, this page doesn't work correctly
+    recipe_pages.remove('https://www.liquor.com/recipes/godfather-101/')
     return recipe_pages
 
 
@@ -111,9 +113,12 @@ def scrap_about(page, recipe):
 
 
 def scrap_how_to_make(page, recipe):
-    link = str(page.find_all('div', class_="row x-recipe-prep")[0]).replace('\n', '')
-    string_with_links = link.replace('</p><p>', ' ')
-    recipe.how_to_make = re.sub(compiled_reg_exs.link_remover, '', string_with_links)
+    if page.find_all('div', class_="row x-recipe-prep"):
+      link = str(page.find_all('div', class_="row x-recipe-prep")[0]).replace('\n', '')
+      string_with_links = link.replace('</p><p>', ' ')
+      recipe.how_to_make = re.sub(compiled_reg_exs.link_remover, '', string_with_links)
+    else:
+      recipe.how_to_make = '' 
 
 
 def fill_recipe_profile_values(recipe_attribute, text, recipe):
@@ -158,8 +163,8 @@ def scrap_all_recipes():
 
 
 def save_all_recipes_as_csv():
-    recipes_file = open('recipes.csv', 'w')
-    table_head = "Link,Name,Ingredients,Garnish,Glass,Flavor,BaseSpirit,CocktailType,Preparation,Served,Strength,Difficulty,Hours,Occasions,Theme,Brands"
+    recipes_file = open('recipes.csv', 'w', encoding="utf-8")
+    table_head = "Link,Name,Image,About,HowToMake,Ingredients,Garnish,Glass,Flavor,BaseSpirit,CocktailType,Preparation,Served,Strength,Difficulty,Hours,Occasions,Theme,Brands"
     
     pages_with_recipes = get_pages_with_recipes()
     recipe_pages = get_recipes(pages_with_recipes)
@@ -174,7 +179,7 @@ def save_all_recipes_as_csv():
 
 
 def save_all_recipes_as_json():
-    recipes_file = open('recipes.json', 'w')
+    recipes_file = open('recipes.json', 'w', encoding="utf-8")
 
     pages_with_recipes = get_pages_with_recipes()
     recipe_pages = get_recipes(pages_with_recipes)
@@ -212,14 +217,14 @@ if __name__ == "__main__":
     headers = requests.utils.default_headers()
     headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'})
     compiled_reg_exs = CompiledRegExs.CompiledRegExs()
-    pagesWithRecipesToLoad = 1  # there is currently 48 pages
+    pagesWithRecipesToLoad = 48  # there is currently 48 pages
 
     # list_of_recipes = scrap_all_recipes()
     # for recipe in list_of_recipes:
     #     print(recipe)
     # print(len(list_of_recipes))
     
-    # save_all_recipes_as_csv()
+    save_all_recipes_as_csv()
     save_all_recipes_as_json()
 
     # get_statistical_data()
