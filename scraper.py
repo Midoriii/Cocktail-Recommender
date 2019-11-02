@@ -68,10 +68,10 @@ def scrap_ingredients(page, recipe):
     for ingredient_line in lines_with_ingredients:
         if ingredient_without_link.search(ingredient_line) is not None and ingredient_line.find('href') == -1:
             ingredient = ingredient_without_link.search(ingredient_line).group(1)
-            recipe.ingredients.append(ingredient)
+            recipe.ingredients.append(ingredient.replace(",",""))
         if ingredient_containing_link.search(ingredient_line) is not None and ingredient_line.find('href') != -1:
             ingredient = ingredient_containing_link.search(ingredient_line).group(1)
-            recipe.ingredients.append(ingredient)
+            recipe.ingredients.append(ingredient.replace(",",""))
 
 
 def scrap_profile(page, recipe):
@@ -84,7 +84,7 @@ def scrap_profile(page, recipe):
 
         for recipe_attribute, regular_expresion in compiled_reg_exs.dict_of_compiled_profile_reg_exs.items():
             if regular_expresion.search(link) is not None:
-                fill_recipe_profile_values(recipe_attribute, regular_expresion.search(link).group(2), recipe)
+                fill_recipe_profile_values(recipe_attribute, regular_expresion.search(link).group(2).replace(",",""), recipe)
 
 
 def scrap_glass(page, recipe):
@@ -110,6 +110,7 @@ def scrap_about(page, recipe):
             string_with_links = compiled_reg_exs.about.search(link).group(1)
             string_without_links = re.sub(compiled_reg_exs.link_remover, '', string_with_links)
             recipe.about = string_without_links.replace('&amp;', '&')
+            recipe.about = recipe.about.replace(",", "")
 
 
 def scrap_how_to_make(page, recipe):
@@ -117,6 +118,7 @@ def scrap_how_to_make(page, recipe):
       link = str(page.find_all('div', class_="row x-recipe-prep")[0]).replace('\n', '')
       string_with_links = link.replace('</p><p>', ' ')
       recipe.how_to_make = re.sub(compiled_reg_exs.link_remover, '', string_with_links)
+      recipe.how_to_make = recipe.how_to_make.replace(",", "")
     else:
       recipe.how_to_make = '' 
 
@@ -163,12 +165,12 @@ def scrap_all_recipes():
 
 
 def save_all_recipes_as_csv():
-    recipes_file = open('recipes.csv', 'w', encoding="utf-8")
+    recipes_file = open('data/recipes.csv', 'w', encoding="utf-8")
     table_head = "Link,Name,Image,About,HowToMake,Ingredients,Garnish,Glass,Flavor,BaseSpirit,CocktailType,Preparation,Served,Strength,Difficulty,Hours,Occasions,Theme,Brands"
     
     pages_with_recipes = get_pages_with_recipes()
     recipe_pages = get_recipes(pages_with_recipes)
-    recipes_file.write(table_head)
+    recipes_file.write(table_head + '\n')
 
     for recipe_page in recipe_pages:
         print('working on: ', recipe_page)
@@ -179,7 +181,7 @@ def save_all_recipes_as_csv():
 
 
 def save_all_recipes_as_json():
-    recipes_file = open('recipes.json', 'w', encoding="utf-8")
+    recipes_file = open('data/recipes.json', 'w', encoding="utf-8")
 
     pages_with_recipes = get_pages_with_recipes()
     recipe_pages = get_recipes(pages_with_recipes)
