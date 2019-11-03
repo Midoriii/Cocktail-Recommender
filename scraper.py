@@ -56,7 +56,7 @@ def scrap_recipe(recipe_link):
 def scrap_title(page, recipe):
     title = page.title.string
     index = title.find(' Cocktail Recipe')  # each recipe title contains string 'Cocktail Recipe' at the end
-    recipe.name = title[:index]
+    recipe.name = title[:index].replace(",","")
 
 
 def scrap_ingredients(page, recipe):
@@ -90,8 +90,8 @@ def scrap_profile(page, recipe):
 def scrap_glass(page, recipe):
     line_with_glass = str(page.findAll("div", {"class": "col-xs-9 recipe-link x-recipe-glasstype no-padding"}))
     if compiled_reg_exs.glass_reg_ex.search(line_with_glass) is not None:
-        text = compiled_reg_exs.glass_reg_ex.search(line_with_glass).group(2)
-        text = text.split(' or ')  # glass can have more than one item separated by string ' or ' e.g. 'glass1 or glass2'
+        text_regexp = compiled_reg_exs.glass_reg_ex.search(line_with_glass).group(2)
+        text = text_regexp.replace(' or ', ',').replace('/', ',').split(',')  # glass can have more than one item separated by string ' or ' e.g. 'glass1 or glass2' .. or ',' or '/'
         recipe.glass.extend(text)
 
 
