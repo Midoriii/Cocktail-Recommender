@@ -1,6 +1,5 @@
 requests==2.22.0
-pandas==0.24.2
-rake_nltk==1.0.4
 numpy==1.14.1
+pandas==0.24.2
 beautifulsoup4==4.8.1
 scikit_learn==0.21.3
