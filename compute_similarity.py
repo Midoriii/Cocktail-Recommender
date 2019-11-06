@@ -4,7 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
-def run():
+def Run():
   data = pd.read_csv('data/recipes.csv', encoding = 'utf-8')
   # We're not gonna be using those
   data.drop(columns = ['Link', 'Image'], inplace = True)
@@ -60,17 +60,7 @@ def run():
   np.save('data/about_howto_similarity.npy', sim_about_howto)
   np.save('data/combined_similarity.npy', sim_combined)
   
-  
-  test = pd.read_csv('data/indices.csv')
-  
-  # Get the value on index
-  print(test.Name[2])
-  # Get the index of the first value matching the wanted drink .. no duplicates in the list so it's okay
-  print(test.Name[test.Name == "Kiwi Bird"].index.tolist()[0])
-  
-  #test = np.load('data/categories_similarity.npy')
-  
   print(data.head())
 
 if __name__ == "__main__":
-  run()
+  Run()
