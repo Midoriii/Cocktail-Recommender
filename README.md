@@ -21,8 +21,8 @@ A PV254 project. Description will be added
 ## Algorithms
 
 * Scrapped data is passed through an tf-idf vectorizer and cosine similarity between the tf-idf-scores is computed and stored.
-* tf-idf is done on words in: 1)Categories without About and How to make  2)Just About and How to make  3) Both combined
-* Basic approach is to keep user's favourite drinks and then recommend a number of similar drinks to few randomly selected from the ones the customer likes. 
+* tf-idf is done on words in: 1) Categories without About and How to make  2) Just About and How to make  3) Both combined
+* Basic approach is to keep user's favourite drinks and then recommend a number of drinks similar to few randomly selected from the ones the customer likes. 
 * Advanced approach would be to select several most important categories and encode user profile and drinks with one-hot encoding. Recommendation would then be based on the resulting score of matrix multiplication between those two.
 
 ## Evaluation
