@@ -11,6 +11,10 @@ def Run():
   data.fillna(' ', inplace=True)
   print(data.shape)
   
+  #  These two columns could benefit from lowercasing, other columns are well managed
+  data['Glass'] = data['Glass'].str.lower()
+  data['Garnish'] = data['Garnish'].str.lower()
+  
   # Replace ';' separator by white space
   separated_cols = ['Ingredients','Garnish','Glass','Flavor','BaseSpirit','CocktailType','Preparation','Served','Difficulty','Hours','Occasions','Theme','Brands']
   

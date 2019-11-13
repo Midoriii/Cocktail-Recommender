@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import sys
 
 # So far only for a single name, to test the recommendations
 def Recommend(name, count):
@@ -20,9 +21,9 @@ def Recommend(name, count):
   scores_combined = pd.Series(sim_combined[idx]).sort_values(ascending = False)
   
   # Get the top 'count'
-  top_count_categories = list(scores_categories.iloc[1:count].index)
-  top_count_about_howto = list(scores_about_howto.iloc[1:count].index)
-  top_count_combined = list(scores_combined.iloc[1:count].index)
+  top_count_categories = list(scores_categories.iloc[1:count+1].index)
+  top_count_about_howto = list(scores_about_howto.iloc[1:count+1].index)
+  top_count_combined = list(scores_combined.iloc[1:count+1].index)
   
   recommended_categories = []
   recommended_about_howto = []
@@ -39,7 +40,7 @@ def Recommend(name, count):
   return [recommended_categories, recommended_about_howto, recommended_combined]
 
 if __name__ == "__main__":
-  list = Recommend("Gin Sonic", 10);
+  list = Recommend("Night Flights", 10);
   print("\n\nBased on Categories: \n")
   print(list[0])
   print("\n\nBased on About and How To: \n")
