@@ -13,8 +13,10 @@ def Recommend(profile_indices, count):
   # Indices of titles
   indices = pd.read_csv('data/indices.csv')
   
+  
+  
   # Get the index of the drink given in 'name'
-  # idx = indices.Name[indices.Name == name].index[0]
+  # idx = indices.Name[indices.Name == "Gin Sonic"].index[0]
   
   # For not recommending stuff the user already likes
   original_profile = profile_indices
@@ -40,9 +42,9 @@ def Recommend(profile_indices, count):
   
   # Get the top 'count'
   for i in range(0, len(profile_indices)):
-    top_count_categories += list(scores_categories[i].iloc[1:2*(count+1)].index)
-    top_count_about_howto += list(scores_about_howto[i].iloc[1:2*(count+1)].index)
-    top_count_combined += list(scores_combined[i].iloc[1:2*(count+1)].index)
+    top_count_categories += list(scores_categories[i].iloc[1:51].index)
+    top_count_about_howto += list(scores_about_howto[i].iloc[1:51].index)
+    top_count_combined += list(scores_combined[i].iloc[1:51].index)
   
   recommended_categories = []
   recommended_about_howto = []
@@ -57,9 +59,9 @@ def Recommend(profile_indices, count):
   #for drink in top_count_combined:
   #  recommended_combined.append(indices.Name[drink])
 	
-  recommended_categories = fill_recommendation_list(count + 1, top_count_categories, original_profile)
-  recommended_about_howto = fill_recommendation_list(count + 1, top_count_about_howto, original_profile)
-  recommended_combined = fill_recommendation_list(count + 1, top_count_combined, original_profile)
+  recommended_categories = fill_recommendation_list(count, top_count_categories, original_profile)
+  recommended_about_howto = fill_recommendation_list(count, top_count_about_howto, original_profile)
+  recommended_combined = fill_recommendation_list(count, top_count_combined, original_profile)
 	
   return [recommended_categories, recommended_about_howto, recommended_combined]
 
@@ -86,22 +88,11 @@ def get_names(idxs):
   
 if __name__ == "__main__":
   
-  profile = [5,120,60,1500]
-  profile_longer = [6,120,50,1700,687,523,651,24,1887,2121]
+  profile = [16,49,69,1030,1654,853,1680]
 
   rec_list = Recommend(profile, 10);
   print("\nProfile: \n")
   print(get_names(profile))
-  print("\n\nBased on Categories: \n")
-  print(get_names(rec_list[0]))
-  print("\n\nBased on About and How To: \n")
-  print(get_names(rec_list[1]))
-  print("\n\nBased on Both: \n")
-  print(get_names(rec_list[2]))
-  
-  rec_list = Recommend(profile_longer, 10);
-  print("\n\n\n\nProfile: \n")
-  print(get_names(profile_longer))
   print("\n\nBased on Categories: \n")
   print(get_names(rec_list[0]))
   print("\n\nBased on About and How To: \n")
