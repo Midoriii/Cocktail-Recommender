@@ -13,19 +13,9 @@ def Recommend(profile_indices, count):
   # Indices of titles
   indices = pd.read_csv('data/indices.csv')
   
-  
-  
   # Get the index of the drink given in 'name'
   # idx = indices.Name[indices.Name == "Gin Sonic"].index[0]
-  
-  # For not recommending stuff the user already likes
-  original_profile = profile_indices
-  
-  # Select only 5 drink indices from profile to find similar drinks to 
-  # 5 is an arbitraty number, should do fine
-  while len(profile_indices) > 5:
-    profile_indices.remove(random.choice(profile_indices))
-  
+ 
   scores_categories = []
   scores_about_howto = []
   scores_combined = []
@@ -59,19 +49,19 @@ def Recommend(profile_indices, count):
   #for drink in top_count_combined:
   #  recommended_combined.append(indices.Name[drink])
 	
-  recommended_categories = fill_recommendation_list(count, top_count_categories, original_profile)
-  recommended_about_howto = fill_recommendation_list(count, top_count_about_howto, original_profile)
-  recommended_combined = fill_recommendation_list(count, top_count_combined, original_profile)
+  recommended_categories = fill_recommendation_list(count, top_count_categories, profile_indices)
+  recommended_about_howto = fill_recommendation_list(count, top_count_about_howto, profile_indices)
+  recommended_combined = fill_recommendation_list(count, top_count_combined, profile_indices)
 	
-  return [recommended_categories, recommended_about_howto, recommended_combined]
+  return [get_drinks(recommended_categories), get_drinks(recommended_about_howto), get_drinks(recommended_combined)]
 
   
 # Fill the resulting list with drinks randomly from selected top few  
-def fill_recommendation_list(count, list, original):
+def fill_recommendation_list(count, list, profile):
   recommended = []
   while len(recommended) < count:
     drink = random.choice(list) 
-    if drink not in recommended and drink not in original:
+    if drink not in recommended and drink not in profile:
       recommended.append(drink)	
   return recommended
   
@@ -83,12 +73,22 @@ def get_names(idxs):
   for drink in idxs:
     names.append(indices.Name[drink])
   return names 
+
+def get_drink(id, drinks_file):
+  return drinks_file.iloc[id].to_json()
+
+def get_drinks(indices):
+  drinks_file = pd.read_csv('data/recipes.csv')
+  drinks = []
+  for index in indices:
+    drinks.append(get_drink(index, drinks_file))
+  return drinks
   
   
   
 if __name__ == "__main__":
   
-  profile = [16,49,69,1030,1654,853,1680]
+  profile = [27,60,80,1576,1025,860,457,962]
 
   rec_list = Recommend(profile, 10);
   print("\nProfile: \n")
