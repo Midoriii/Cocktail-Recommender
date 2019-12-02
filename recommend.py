@@ -53,7 +53,7 @@ def Recommend(profile_indices, count):
   recommended_about_howto = fill_recommendation_list(count, top_count_about_howto, profile_indices)
   recommended_combined = fill_recommendation_list(count, top_count_combined, profile_indices)
 	
-  return [recommended_categories, recommended_about_howto, recommended_combined]
+  return [get_drinks(recommended_categories), get_drinks(recommended_about_howto), get_drinks(recommended_combined)]
 
   
 # Fill the resulting list with drinks randomly from selected top few  
@@ -73,6 +73,18 @@ def get_names(idxs):
   for drink in idxs:
     names.append(indices.Name[drink])
   return names 
+
+def get_drink(id, drinks_file):
+  if drinks_file is None:
+    drinks_file = pd.read_csv('data/recipes.csv')
+  return drinks_file.iloc[id].to_json()
+
+def get_drinks(indices):
+  drinks_file = pd.read_csv('data/recipes.csv')
+  drinks = []
+  for index in indices:
+    drinks.append(get_drink(index, drinks_file))
+  return drinks
   
   
   
