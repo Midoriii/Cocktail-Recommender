@@ -1,0 +1,52 @@
+@import '~@angular/material/theming';
+
+// Copy the palettes from your selected theme (usually theme.scss).
+$app-primary: mat-palette($mat-pink);
+$app-accent:  mat-palette($mat-grey);
+$app-warn:    mat-palette($mat-pink);
+
+// Create your Sass color vars (will be available in all the project)
+$primary: mat-color($app-primary);
+$accent: mat-color($app-accent);
+$warn: mat-color($app-warn);
+
+.drinks {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.drink {
+  flex-grow: 0;
+}
+
+section.main-drinks {
+    background-color: $primary;
+
+    h2 {
+        color: #fff;
+    }
+}
+
+section {
+    padding: 30px 0;
+    margin-bottom: 40px;
+}
+
+section.recommended-drinks:nth-child(2n) {
+    background-color: $accent;
+
+    header h2 {
+        color: #fff;
+    }
+}
+
+header {
+  text-align: center;
+
+  h2 {
+    margin-top: 0;
+    display: inline-block;
+    margin-right: 20px;
+  }
+}
