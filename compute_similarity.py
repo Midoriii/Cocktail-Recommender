@@ -11,6 +11,13 @@ def Run():
   data.fillna(' ', inplace=True)
   print(data.shape)
   
+  # Remove cocktails missing About or How to Make, as that screws recommendations and it's only a few of them (about 80)
+  data['About'].replace(' ', np.nan, inplace = True)
+  data['HowToMake'].replace(' ', np.nan, inplace = True)
+  data.dropna(subset = ['About'], inplace = True)
+  data.dropna(subset = ['HowToMake'], inplace = True)
+  print(data.shape)
+  
   #  These two columns could benefit from lowercasing, other columns are well managed
   data['Glass'] = data['Glass'].str.lower()
   data['Garnish'] = data['Garnish'].str.lower()
