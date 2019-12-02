@@ -75,6 +75,8 @@ def get_names(idxs):
   return names 
 
 def get_drink(id, drinks_file):
+  if drinks_file is None:
+    drinks_file = pd.read_csv('data/recipes.csv')
   return drinks_file.iloc[id].to_json()
 
 def get_drinks(indices):
