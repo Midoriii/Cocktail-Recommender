@@ -49,4 +49,16 @@ export class EvaluatorComponent implements OnInit {
     );
   }
 
+  rateRecommender(id: number) {
+    this.initializeEvaluator();
+    this.api.rateRecommender(id).subscribe(
+      (status: string) => {
+        console.log('New status is ', status);
+      },
+      error => {
+        console.log('An error occured during sending rating.', error);
+      }
+    );
+  }
+
 }

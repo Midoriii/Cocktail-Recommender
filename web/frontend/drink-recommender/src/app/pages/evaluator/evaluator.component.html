@@ -1,7 +1,7 @@
 <!-- Random chosen drinks -->
 <section class="main-drinks">
     <header class="text-center">
-        <h2>Random chosen drink</h2>
+        <h2>Random chosen drink <button mat-raised-button color="secondary" style="margin-left: 15px;" (click)="initializeEvaluator()">Choose another drink</button></h2>
     </header>
     <div class="drinks">
         <div class="drink">
@@ -12,7 +12,7 @@
 <!-- First row of recommendations -->
 <section class="recommended-drinks">
     <header>
-        <h2>#1 Recommended drinks</h2><button mat-raised-button color="primary" (click)="createEvaluator()">The best row</button>
+        <h2>#1 Recommended drinks</h2><button mat-raised-button color="primary" (click)="rateRecommender(0)">The best row</button>
     </header>
     <div class="drinks">
         <div *ngFor="let drink of recommendedDrinks1" class="drink">
@@ -23,7 +23,7 @@
 <!-- Second row of recommendations -->
 <section class="recommended-drinks">
     <header>
-        <h2>#2 Recommended drinks</h2><button mat-raised-button color="primary" (click)="createEvaluator()">The best row</button>
+        <h2>#2 Recommended drinks</h2><button mat-raised-button color="primary" (click)="rateRecommender(1)">The best row</button>
     </header>
     <div class="drinks">
         <div *ngFor="let drink of recommendedDrinks2" class="drink">
@@ -34,7 +34,7 @@
 <!-- Third row of recommendations -->
 <section class="recommended-drinks">
     <header>
-        <h2>#3 Recommended drinks</h2><button mat-raised-button color="primary" (click)="createEvaluator()">The best row</button>
+        <h2>#3 Recommended drinks</h2><button mat-raised-button color="primary" (click)="rateRecommender(2)">The best row</button>
     </header>
 
     <div class="drinks">

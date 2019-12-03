@@ -19,4 +19,8 @@ export class ApiService {
   public getRecommendedDrinks(baseDrinksIndices: number[], c: number): Observable<Drink[][]> {
     return this.http.post<Drink[][]>(environment.apiUrl + '/recommend', {indices: baseDrinksIndices, count: c});
   }
+
+  public rateRecommender(id: number): Observable<string> {
+    return this.http.get<string>(environment.apiUrl + `/rate/${id}`);
+  }
 }
