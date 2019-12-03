@@ -1,4 +1,3 @@
-<header>Evaluator</header>
 <!-- Random chosen drinks -->
 <section class="main-drinks">
     <header class="text-center">
@@ -6,59 +5,41 @@
     </header>
     <div class="drinks">
         <div class="drink">
-            <app-drink></app-drink>
+            <app-drink *ngFor="let drink of baseDrinks" [drink]="drink"></app-drink>
         </div>
     </div>
 </section>
 <!-- First row of recommendations -->
 <section class="recommended-drinks">
     <header>
-        <h2>#1 Recommended drinks</h2><button mat-raised-button color="primary">The best row</button>
+        <h2>#1 Recommended drinks</h2><button mat-raised-button color="primary" (click)="createEvaluator()">The best row</button>
     </header>
     <div class="drinks">
-        <div class="drink">
-            <app-drink></app-drink>
-        </div>
-        <div class="drink">
-            <app-drink></app-drink>
-        </div>
-        <div class="drink">
-            <app-drink></app-drink>
+        <div *ngFor="let drink of recommendedDrinks1" class="drink">
+            <app-drink [drink]="drink"></app-drink>
         </div>
     </div>
 </section>
 <!-- Second row of recommendations -->
 <section class="recommended-drinks">
     <header>
-        <h2>#1 Recommended drinks</h2><button mat-raised-button color="primary">The best row</button>
+        <h2>#2 Recommended drinks</h2><button mat-raised-button color="primary" (click)="createEvaluator()">The best row</button>
     </header>
     <div class="drinks">
-        <div class="drink">
-            <app-drink></app-drink>
-        </div>
-        <div class="drink">
-            <app-drink></app-drink>
-        </div>
-        <div class="drink">
-            <app-drink></app-drink>
+        <div *ngFor="let drink of recommendedDrinks2" class="drink">
+            <app-drink [drink]="drink"></app-drink>
         </div>
     </div>
 </section>
 <!-- Third row of recommendations -->
 <section class="recommended-drinks">
     <header>
-        <h2>#3 Recommended drinks</h2><button mat-raised-button color="primary">The best row</button>
+        <h2>#3 Recommended drinks</h2><button mat-raised-button color="primary" (click)="createEvaluator()">The best row</button>
     </header>
 
     <div class="drinks">
-        <div class="drink">
-            <app-drink></app-drink>
-        </div>
-        <div class="drink">
-            <app-drink></app-drink>
-        </div>
-        <div class="drink">
-            <app-drink></app-drink>
+        <div *ngFor="let drink of recommendedDrinks3" class="drink">
+            <app-drink [drink]="drink"></app-drink>
         </div>
     </div>
 </section>
