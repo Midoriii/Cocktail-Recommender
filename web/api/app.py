@@ -20,7 +20,7 @@ def drink(drink_id):
 
 @app.route('/rate/<int:cat_id>', methods=['GET'])
 def rate(cat_id):
-    with open("results.txt", "r+") as fo:
+    with open("data/results.txt", "r+") as fo:
         results = fo.read().splitlines()[0]
         list_results = results.split(';')
         list_results[int(cat_id)] = str(int(list_results[cat_id]) + 1)
