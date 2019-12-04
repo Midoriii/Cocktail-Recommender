@@ -165,7 +165,7 @@ def scrap_all_recipes():
 
 
 def save_all_recipes_as_csv():
-    recipes_file = open('data/recipes.csv', 'w', encoding="utf-8")
+    recipes_file = open('data/recipes_crude.csv', 'w', encoding="utf-8")
     table_head = "Link,Name,Image,About,HowToMake,Ingredients,Garnish,Glass,Flavor,BaseSpirit,CocktailType,Preparation,Served,Strength,Difficulty,Hours,Occasions,Theme,Brands"
     
     pages_with_recipes = get_pages_with_recipes()
