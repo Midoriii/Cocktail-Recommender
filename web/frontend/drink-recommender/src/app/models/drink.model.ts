@@ -7,6 +7,6 @@ export interface Drink {
     HowToMake: string;
     Ingredients: string;
     BaseSpirit: string;
-    CoctailType: string;
+    CocktailType: string;
     Flavor: string;
 }

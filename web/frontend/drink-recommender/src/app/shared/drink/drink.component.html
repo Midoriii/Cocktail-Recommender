@@ -9,8 +9,8 @@
         <p>
             <strong>About:</strong> {{ drink.About }}
         </p>
-        <p><strong>Flavor</strong>{{ drink.Flavor }}</p>
-        <p><strong>Coctail type:</strong>{{ drink.CoctailType }}</p>
+        <p><strong>Flavor:</strong> {{ drink.Flavor }}</p>
+        <p><strong>Coctail type:</strong> {{ drink.CocktailType }}</p>
         <p><strong>Ingredients:</strong></p>
         <ul>
             <li *ngFor="let ingredient of drink.Ingredients?.split(';')">{{ ingredient }}</li>
