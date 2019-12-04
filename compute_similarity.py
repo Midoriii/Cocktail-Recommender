@@ -35,15 +35,26 @@ def Run():
   data['bag_of_words_about_howto'] = ""
   data['bag_of_words_combined'] = ""
   
+  data['bag_of_words_categories_boosted'] = ""
+  data['bag_of_words_combined_boosted'] = ""
+  
+  data = data[~data.Name.str.contains('Taco')]
+  print(data.shape)
+  
   # Concat all strings together into bags of words before tf-idf vectorization (which also tokenizes)
   for i, row in data.iterrows():
     for col in data.columns:
       if col in ['About','HowToMake']:
         row['bag_of_words_about_howto'] += row[col] + " "
-      if col not in ['About','HowToMake','Name','bag_of_words_about_howto','bag_of_words_categories','bag_of_words_combined']:
+      if col not in ['About','HowToMake','Name','bag_of_words_about_howto','bag_of_words_categories','bag_of_words_combined','bag_of_words_categories_boosted','bag_of_words_combined_boosted']:
         row['bag_of_words_categories'] += row[col] + " "
+        if col in ['BaseSpirit','Flavor','CocktailType','Ingredients','Served']:
+          string = row[col] + " "
+          row['bag_of_words_categories_boosted'] += string*5 + " "
+        row['bag_of_words_categories_boosted'] += row[col] + " "
 
     row['bag_of_words_combined'] = row['bag_of_words_about_howto'] + " " + row['bag_of_words_categories']
+    row['bag_of_words_combined_boosted'] = row['bag_of_words_about_howto'] + " " + row['bag_of_words_categories_boosted']
   
   # We'll want indices bound to names .. because similarity matrix is just that, a matrix, and we don't want to load the whole recipes.csv and compute it again and again
   # in recommendation, so we need a way to bind the indices in matrices to cocktail names, to find the similarity scores of input drink AND get the names of found similar indices
@@ -51,7 +62,9 @@ def Run():
   data.set_index('Name', inplace = True)
   
   # We won't need anything but the Names and bags now
-  data.drop(columns = [col for col in data.columns if col not in ['Name','bag_of_words_categories','bag_of_words_about_howto','bag_of_words_combined']], inplace = True)
+  data.drop(columns = [col for col in data.columns if col not in ['Name','bag_of_words_categories','bag_of_words_about_howto','bag_of_words_combined','bag_of_words_categories_boosted','bag_of_words_combined_boosted']], inplace = True)
+  
+  
   
   # Create a vectorizer that does almost everything for us
   tf = TfidfVectorizer(analyzer='word', ngram_range=(1, 3), min_df = 0, stop_words='english')
@@ -61,15 +74,24 @@ def Run():
   about_howto_matrix = tf.fit_transform(data['bag_of_words_about_howto'])
   combined_matrix = tf.fit_transform(data['bag_of_words_combined'])
   
+  categories_matrix_boosted = tf.fit_transform(data['bag_of_words_categories_boosted'])
+  combined_matrix_boosted = tf.fit_transform(data['bag_of_words_combined_boosted'])
+  
   # Get the similarity matrices
   sim_categories = cosine_similarity(categories_matrix, categories_matrix)
   sim_about_howto = cosine_similarity(about_howto_matrix, about_howto_matrix)
   sim_combined = cosine_similarity(combined_matrix, combined_matrix)
   
+  sim_categories_boosted = cosine_similarity(categories_matrix_boosted, categories_matrix_boosted)
+  sim_combined_boosted = cosine_similarity(combined_matrix_boosted, combined_matrix_boosted)
+  
   # Save the similarity matrices to be loaded by the recommender
   np.save('data/categories_similarity.npy', sim_categories)
   np.save('data/about_howto_similarity.npy', sim_about_howto)
   np.save('data/combined_similarity.npy', sim_combined)
+  
+  np.save('data/categories_similarity_boosted.npy', sim_categories_boosted)
+  np.save('data/combined_similarity_boosted.npy', sim_combined_boosted)
   
   print(data.head())
 

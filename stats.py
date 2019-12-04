@@ -1,6 +1,7 @@
 import pandas as pd
 import sys
 from collections import defaultdict
+import matplotlib.pyplot as plt
 
 def get_stats(stat='BaseSpirit'):
   data = pd.read_csv('data/recipes.csv')
@@ -21,6 +22,9 @@ def get_stats(stat='BaseSpirit'):
   for i in sorted(stats, key = stats.get, reverse = True):
     print(i + ": " + str(stats[i]))
   print("Missing:" + str(stats['nothing']))
+  
+  plt.barh(*zip(*stats.items()))
+  plt.show()
 		
 if __name__ == "__main__":
   if len(sys.argv) > 1:

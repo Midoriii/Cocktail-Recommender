@@ -4,56 +4,39 @@ import random
 import sys
 
 # So far only for a single name, to test the recommendations
-def Recommend(profile_indices, count):
+def get_recommendation_list(profile_indices, count, similarity_file, eye_test = False, eval_test = False):
   # Load similarity matrices, possibly add switch to choose which one to use in the future
-  sim_categories = np.load('data/categories_similarity.npy')
-  sim_about_howto = np.load('data/about_howto_similarity.npy')
-  sim_combined = np.load('data/combined_similarity.npy')
-  
+  similarity = np.load('data/' + similarity_file + '.npy')
+
   # Indices of titles
   indices = pd.read_csv('data/indices.csv')
   
   # Get the index of the drink given in 'name'
   # idx = indices.Name[indices.Name == "Gin Sonic"].index[0]
  
-  scores_categories = []
-  scores_about_howto = []
-  scores_combined = []
+  scores = []
   
   # Get the sorted scores on the indices .. creating Series gives us the ability to pair drink with its score and retrieve it based on its index
   for i in range(0, len(profile_indices)):
-    scores_categories.append(pd.Series(sim_categories[profile_indices[i]]).sort_values(ascending = False))
-    scores_about_howto.append(pd.Series(sim_about_howto[profile_indices[i]]).sort_values(ascending = False))
-    scores_combined.append(pd.Series(sim_combined[profile_indices[i]]).sort_values(ascending = False))
+    scores.append(pd.Series(similarity[profile_indices[i]]).sort_values(ascending = False))
 	
-  top_count_categories = []
-  top_count_about_howto = []
-  top_count_combined = []
+  top_count = []
   
   # Get the top 'count'
   for i in range(0, len(profile_indices)):
-    top_count_categories += list(scores_categories[i].iloc[1:51].index)
-    top_count_about_howto += list(scores_about_howto[i].iloc[1:51].index)
-    top_count_combined += list(scores_combined[i].iloc[1:51].index)
+    top_count += list(scores[i].iloc[1:31].index)
   
-  recommended_categories = []
-  recommended_about_howto = []
-  recommended_combined = []
-  
-  # Get the names from indices
-  # This will be just debug info, since we only want to pass indices around, because of duplicate names !!!
-  #for drink in top_count_categories:
-  #  recommended_categories.append(indices.Name[drink])
-  #for drink in top_count_about_howto:
-  #  recommended_about_howto.append(indices.Name[drink])
-  #for drink in top_count_combined:
-  #  recommended_combined.append(indices.Name[drink])
+  recommended = []
 	
-  recommended_categories = fill_recommendation_list(count, top_count_categories, profile_indices)
-  recommended_about_howto = fill_recommendation_list(count, top_count_about_howto, profile_indices)
-  recommended_combined = fill_recommendation_list(count, top_count_combined, profile_indices)
+  recommended = fill_recommendation_list(count, top_count, profile_indices)
 	
-  return [get_drinks(recommended_categories), get_drinks(recommended_about_howto), get_drinks(recommended_combined)]
+  if eye_test:
+    return recommended
+	
+  if eval_test:
+    return top_count
+	
+  return [get_drinks(recommended)]
 
   
 # Fill the resulting list with drinks randomly from selected top few  
@@ -85,14 +68,25 @@ def get_drinks(indices):
   for index in indices:
     drinks.append(get_drink(index, drinks_file))
   return drinks
+
+# Eye test for easier output of names to console
+# Eval test for comparing categories vs about + howto
+def Recommend(profile_indices, count, eye_test = False, eval_test = False):
+  categories_list = get_recommendation_list(profile_indices, count, 'categories_similarity', eye_test, eval_test)
+  about_howto_list = get_recommendation_list(profile_indices, count, 'about_howto_similarity', eye_test, eval_test)
+  combined_list = get_recommendation_list(profile_indices, count, 'combined_similarity', eye_test, eval_test)
   
+  categories_boosted_list = get_recommendation_list(profile_indices, count, 'categories_similarity_boosted', eye_test, eval_test)
+  combined_boosted_list = get_recommendation_list(profile_indices, count, 'combined_similarity_boosted', eye_test, eval_test)
+  
+  return [categories_list, about_howto_list, combined_list, categories_boosted_list, combined_boosted_list]
   
   
 if __name__ == "__main__":
   
-  profile = [27,60,80,1576,1025,860,457,962]
+  profile = [27,60,80,1563,1012,861,457,950]
 
-  rec_list = Recommend(profile, 10);
+  rec_list = Recommend(profile, 10, False, True);
   print("\nProfile: \n")
   print(get_names(profile))
   print("\n\nBased on Categories: \n")
@@ -101,3 +95,7 @@ if __name__ == "__main__":
   print(get_names(rec_list[1]))
   print("\n\nBased on Both: \n")
   print(get_names(rec_list[2]))
+  print("\n\nBased on Boosted Categories: \n")
+  print(get_names(rec_list[3]))
+  print("\n\nBased on Boosted Combined: \n")
+  print(get_names(rec_list[4]))
