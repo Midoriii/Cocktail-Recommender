@@ -11,13 +11,6 @@ def Run():
   data.fillna(' ', inplace=True)
   print(data.shape)
   
-  # Remove cocktails missing About or How to Make, as that screws recommendations and it's only a few of them (about 80)
-  data['About'].replace(' ', np.nan, inplace = True)
-  data['HowToMake'].replace(' ', np.nan, inplace = True)
-  data.dropna(subset = ['About'], inplace = True)
-  data.dropna(subset = ['HowToMake'], inplace = True)
-  print(data.shape)
-  
   #  These two columns could benefit from lowercasing, other columns are well managed
   data['Glass'] = data['Glass'].str.lower()
   data['Garnish'] = data['Garnish'].str.lower()
@@ -37,9 +30,6 @@ def Run():
   
   data['bag_of_words_categories_boosted'] = ""
   data['bag_of_words_combined_boosted'] = ""
-  
-  data = data[~data.Name.str.contains('Taco')]
-  print(data.shape)
   
   # Concat all strings together into bags of words before tf-idf vectorization (which also tokenizes)
   for i, row in data.iterrows():
