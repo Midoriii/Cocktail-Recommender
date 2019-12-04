@@ -36,7 +36,7 @@ def get_recommendation_list(profile_indices, count, similarity_file, eye_test = 
   if eval_test:
     return top_count
 	
-  return [get_drinks(recommended)]
+  return get_drinks(recommended)
 
   
 # Fill the resulting list with drinks randomly from selected top few  
@@ -60,7 +60,7 @@ def get_names(idxs):
 def get_drink(id, drinks_file):
   if drinks_file is None:
     drinks_file = pd.read_csv('data/recipes.csv')
-  return drinks_file.iloc[id].to_json()
+  return drinks_file.iloc[id].to_dict()
 
 def get_drinks(indices):
   drinks_file = pd.read_csv('data/recipes.csv')
