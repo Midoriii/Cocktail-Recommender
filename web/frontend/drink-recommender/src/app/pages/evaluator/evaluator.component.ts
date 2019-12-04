@@ -9,11 +9,9 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class EvaluatorComponent implements OnInit {
   baseDrinksNumber = 1;
-  recommendedDrinksNumber = 3;
+  recommendedDrinksNumber = 1;
   baseDrinks: Drink[] = [];
-  recommendedDrinks1: Drink[] = [];
-  recommendedDrinks2: Drink[] = [];
-  recommendedDrinks3: Drink[] = [];
+  recommendedDrinks: Drink[][];
 
   constructor(private api: ApiService) { }
 
@@ -23,9 +21,6 @@ export class EvaluatorComponent implements OnInit {
 
   initializeEvaluator() {
     const baseDrinkIndices = [];
-    this.recommendedDrinks1 = [];
-    this.recommendedDrinks2 = [];
-    this.recommendedDrinks3 = [];
     this.baseDrinks = [];
 
     for (let i = 0; i < this.baseDrinksNumber; i++) {
@@ -41,9 +36,7 @@ export class EvaluatorComponent implements OnInit {
 
     this.api.getRecommendedDrinks(baseDrinkIndices, 3).subscribe(
       (drinks: Drink[][]) => {
-        this.recommendedDrinks1 = drinks[0];
-        this.recommendedDrinks2 = drinks[1];
-        this.recommendedDrinks3 = drinks[2];
+        this.recommendedDrinks = drinks;
       },
       error => console.log('An error occured during fetching recommendations.', error)
     );

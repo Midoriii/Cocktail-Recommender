@@ -13,7 +13,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   public getDrink(id: number): Observable<Drink> {
-    return this.http.get<Drink>(environment.apiUrl + `/drink/${id}`).pipe(map((d: Drink) => { d.Id = id; return d;}));
+    return this.http.get<Drink>(environment.apiUrl + `/drink/${id}`).pipe(map((d: Drink) => { d.Id = id; return d; }));
   }
 
   public getRecommendedDrinks(baseDrinksIndices: number[], c: number): Observable<Drink[][]> {
