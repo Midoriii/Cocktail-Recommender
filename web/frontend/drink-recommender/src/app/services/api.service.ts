@@ -21,6 +21,7 @@ export class ApiService {
   }
 
   public rateRecommender(id: number): Observable<string> {
-    return this.http.get<string>(environment.apiUrl + `/rate/${id}`);
+    id = id + 1;
+    return this.http.get<string>(`http://drinks.mattadev.eu/counter.php?recommender=${id}`);
   }
 }
