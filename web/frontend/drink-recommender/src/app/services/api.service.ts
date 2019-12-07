@@ -20,8 +20,8 @@ export class ApiService {
     return this.http.post<Drink[][]>(environment.apiUrl + '/recommend', {indices: baseDrinksIndices, count: c});
   }
 
-  public rateRecommender(id: number): Observable<string> {
+  public rateRecommender(id: number): Observable<any> {
     id = id + 1;
-    return this.http.get<string>(`http://drinks.mattadev.eu/counter.php?recommender=${id}`);
+    return this.http.get<any>(`http://drinks.mattadev.eu/counter.php?recommender=${id}`);
   }
 }

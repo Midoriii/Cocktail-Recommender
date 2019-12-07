@@ -45,7 +45,7 @@ export class EvaluatorComponent implements OnInit {
   rateRecommender(id: number) {
     this.initializeEvaluator();
     this.api.rateRecommender(id).subscribe(
-      (status: string) => {
+      (status: any) => {
         console.log('New status is ', status);
       },
       error => {
