@@ -41,7 +41,7 @@ export class HomepageComponent implements OnInit {
 
   showRecommendedDrinks() {
     this.loading = true;
-    this.api.getRecommendedDrinks(this.likedDrinks, 16).subscribe(
+    this.api.getRecommendedDrinks(this.likedDrinks, 20).subscribe(
       (drinks: Drink[][]) => {
         this.recommendedDrinks = drinks[2];
         this.loading = false;

@@ -6,7 +6,8 @@
 }
 
 .drink {
-  width: 30%;
+  width: 25%;
+  padding: 20px;
   flex-grow: 0;
   display: flex;
   overflow: hidden;
@@ -14,7 +15,8 @@
 }
 
 .drink-recommended {
-  width: 44% !important;
+  width: 20% !important;
+  padding: 20px;
 }
 
 ::ng-deep .drink .mat-card {
