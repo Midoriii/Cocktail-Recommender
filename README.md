@@ -1,6 +1,6 @@
 # Cocktail Recommender
 
-A PV254 project. Description will be added
+A PV254 project. A Content-based cocktail recommender, works by first building a user profile of drinks and then recommends additional cocktails based on user's liking.
 
 ## Requirements
 
@@ -22,14 +22,18 @@ A PV254 project. Description will be added
 
 * Scrapped data is passed through an tf-idf vectorizer and cosine similarity between the tf-idf-scores is computed and stored.
 * tf-idf is done on words in: 1) Categories without About and How to make  2) Just About and How to make  3) Both combined
-* Basic approach is to keep user's favourite drinks and then recommend a number of drinks similar to few randomly selected from the ones the customer likes. 
-* Advanced approach would be to select several most important categories and encode user profile and drinks with one-hot encoding. Recommendation would then be based on the resulting score of matrix multiplication between those two.
+* Basic approach is to keep user's favourite drinks, get the top 30 similar drinks to each of user's already liked drinks and from those randomly select desired number for the final suggestion. 
+* In addition we've also artificially boosted the importance of some categories in two additional tf-idfs.
 
 ## Evaluation
 
-* 'Eye-test' on the suitability of the recommended cocktails, try to evaluate strengths and weaknesses of all approaches.
-* Might ask a bartending friend for an expert opinion.
-* If time permits, gather responses from a small group of testers
+* 'Eye-test' on the suitability of the recommended cocktails.
+* Evaluator consists of randomly chosen drink and 5 rows of 3 recommendations, each row is one randomly shuffled method of the five mentioned.
+* Chosen row gains a point for its method
+* Combined approach won this evaluation, with methods based on categories not too far behind, even the boosted variants. Method based on pure description fell short.
+
+* Similarity between two methods is found by using intersection on the sets of drinks they recommend. 
+* Categories make up a significiant portion of Combined list, with few important drinks recommended by About and How to make filling the rest.
 
 ## Authors
 
