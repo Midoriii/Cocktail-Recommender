@@ -1,1 +1,27 @@
-<p>homepage works!</p>
+<p *ngIf="loading">Loading...</p>
+<ng-container *ngIf="!loading">
+    <section class="recommended-drinks" *ngIf="!showRecommendationsPanel">
+        <header class="text-center">
+            <h2>Select drinks you like.</h2>
+        </header>
+        <div class="drinks" *ngFor="let drinkSet of initialDrinks">
+            <div *ngFor="let drink of drinkSet" class="drink">
+                <app-drink (likedDrink)="addLikedDrink($event)" [drink]="drink" [hideDetails]="true" [showLike]="true">
+                </app-drink>
+            </div>
+        </div>
+        <button [disabled]="likedDrinks.length === 0" (click)="showRecommendedDrinks()" mat-raised-button color="primary" class="show">Show
+            recommendations</button>
+    </section>
+    <section class="recommended-drinks" *ngIf="showRecommendationsPanel">
+        <header class="text-center">
+            <h2>Here are recommendations we made for you!</h2>
+        </header>
+        <div class="drinks">
+            <div *ngFor="let drink of recommendedDrinks" class="drink drink-recommended">
+                <app-drink [drink]="drink" [showLike]="true"></app-drink>
+            </div>
+        </div>
+        <button [disabled]="likedDrinks.length === 0" (click)="showRecommendedDrinks()" mat-raised-button color="primary" class="show">Show me more recommendations!</button>
+    </section>
+</ng-container>

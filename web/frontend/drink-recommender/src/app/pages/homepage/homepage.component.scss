@@ -1,0 +1,40 @@
+.drinks {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.drink {
+  width: 30%;
+  flex-grow: 0;
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 35px;
+}
+
+.drink-recommended {
+  width: 44% !important;
+}
+
+::ng-deep .drink .mat-card {
+  height: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.show {
+  text-align: center;
+  padding: 15px;
+  font-size: 25px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+button[disabled] {
+  background-color: #b0bec5 !important;
+}

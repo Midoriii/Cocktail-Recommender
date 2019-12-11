@@ -4,8 +4,8 @@ import { EvaluatorComponent } from './pages/evaluator/evaluator.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 
 const routes: Routes = [
-  { path: 'homepage', component: HomepageComponent },
-  { path: 'evaluator', component: EvaluatorComponent }
+  { path: '', pathMatch: 'full', component: HomepageComponent },
+  { path: 'evaluator', component: EvaluatorComponent },
 ];
 
 @NgModule({
