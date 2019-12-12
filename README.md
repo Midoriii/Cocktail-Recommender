@@ -1,6 +1,7 @@
 # Cocktail Recommender
 
 A PV254 project. A Content-based cocktail recommender, works by first building a user profile of drinks and then recommends additional cocktails based on user's liking.
+Yo can find working application here: http://drinks.mattadev.eu/
 
 ## Requirements
 
@@ -38,8 +39,8 @@ A PV254 project. A Content-based cocktail recommender, works by first building a
 ## Authors
 
 * **Marek Kucera**
-* **ätep·n Beneö**
-* **Luk·ö Matta**
+* **≈†tep√°n Bene≈°**
+* **Luk√°≈° Matta**
 
 ## License
 
