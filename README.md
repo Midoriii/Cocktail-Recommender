@@ -29,7 +29,7 @@ You can find working application here: http://drinks.mattadev.eu/
 ## Evaluation
 
 * 'Eye-test' on the suitability of the recommended cocktails.
-* Evaluator consists of randomly chosen drink and 5 rows of 3 recommendations, each row is one randomly shuffled method of the five mentioned.
+* Evaluator consists of randomly chosen drink and 5 rows of recommendations, each row is one randomly shuffled method of the five mentioned.
 * Chosen row gains a point for its method
 * Combined approach won this evaluation, with methods based on categories not too far behind, even the boosted variants. Method based on pure description fell short.
 
@@ -38,13 +38,9 @@ You can find working application here: http://drinks.mattadev.eu/
 
 ## Authors
 
-* **Marek Kucera**
-* **Štepán Beneš**
-* **Lukáš Matta**
-
-## License
-
-ehhh
+* **Marek Kucera** - Data Scraping
+* **Štepán Beneš** - Recommendation
+* **Lukáš Matta** - Frontend
 
 ## Acknowledgments
 
